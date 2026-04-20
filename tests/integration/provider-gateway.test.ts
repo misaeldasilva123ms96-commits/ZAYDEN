@@ -55,16 +55,26 @@ test("gateway: unknown adapter id throws ProviderNotFoundError", async () => {
 });
 
 test("gateway: gemma-local unavailable without asset paths", async () => {
+  const previousEndpoint = process.env.ZAYDEN_LOCAL_HTTP_ENDPOINT;
+  process.env.ZAYDEN_LOCAL_HTTP_ENDPOINT = "http://127.0.0.1:1";
   delete process.env.ZAYDEN_GGUF_ZIP_PATH;
   delete process.env.ZAYDEN_GGUF_PATH;
-  const validators = createContractValidators();
-  const registry = new ProviderRegistry();
-  registry.register(new GemmaLocalAdapter());
-  const gateway = new ProviderGateway(validators, registry);
-  await assert.rejects(
-    () => gateway.execute("gemma-local", minimalProviderRequest()),
-    ProviderUnavailableError,
-  );
+  try {
+    const validators = createContractValidators();
+    const registry = new ProviderRegistry();
+    registry.register(new GemmaLocalAdapter());
+    const gateway = new ProviderGateway(validators, registry);
+    await assert.rejects(
+      () => gateway.execute("gemma-local", minimalProviderRequest()),
+      ProviderUnavailableError,
+    );
+  } finally {
+    if (previousEndpoint === undefined) {
+      delete process.env.ZAYDEN_LOCAL_HTTP_ENDPOINT;
+    } else {
+      process.env.ZAYDEN_LOCAL_HTTP_ENDPOINT = previousEndpoint;
+    }
+  }
 });
 
 test("gateway: JSON roundtrip on request preserves validity through gateway", async () => {

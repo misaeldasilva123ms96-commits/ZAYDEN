@@ -17,6 +17,7 @@
     "runtime/contracts/**/*.ts",
     "runtime/core/**/*.ts",
     "runtime/providers/**/*.ts",
+    "tests/unit/**/*.ts",
     "tests/contracts/**/*.ts",
     "tests/integration/**/*.ts"
   ]

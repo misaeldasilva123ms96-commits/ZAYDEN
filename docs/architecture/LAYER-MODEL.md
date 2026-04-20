@@ -25,9 +25,10 @@ This document defines the **target** layering for ZAYDEN. It is not a claim that
 - Orchestration, routing, sessions, safety policy application
 - Stable internal contracts (types + invariants)
 
-**Phase 2 implementation**
+**Phase 5 implementation**
 
 - JSON Schema contracts + TS validators: `runtime/contracts/*.schema.json`, `runtime/contracts/validators.ts`
+- Deterministic runtime orchestrator: `runtime/core/runtime-orchestrator.ts`
 
 ## Layer 3 — Provider Gateway
 
@@ -38,10 +39,11 @@ This document defines the **target** layering for ZAYDEN. It is not a claim that
 - Cloud provider routing
 - Explicit fallback reasons (observable)
 
-**Phase 3 implementation**
+**Phase 5 implementation**
 
 - `ProviderRegistry` + `ProviderGateway` (`runtime/providers/registry/provider-registry.ts`)
-- Adapters: `runtime/providers/adapters/mock/mock.adapter.ts`, `runtime/providers/adapters/local/gemma-local.adapter.ts`
+- Adapters: `runtime/providers/adapters/mock/mock.adapter.ts`, `runtime/providers/adapters/local/gemma-local.adapter.ts`, `runtime/providers/adapters/local/gemma-http.adapter.ts`, `runtime/providers/adapters/local/gemma-cli.adapter.ts`
+- Routing policy layer: `runtime/providers/routing/*`
 
 ## Layer 4 — Tooling & Execution
 
@@ -51,7 +53,7 @@ This document defines the **target** layering for ZAYDEN. It is not a claim that
 
 **Phase 1 implementation**
 
-- Scaffold README only: `runtime/tooling/README.md`
+- Scaffold README only: `runtime/tools/README.md`
 
 ## Layer 5 — Memory & State
 

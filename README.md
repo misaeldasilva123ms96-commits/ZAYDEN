@@ -49,6 +49,12 @@ npm run gate:phase2
 npm run gate:phase4
 ```
 
+7. Routing/orchestration gate (Phase 5):
+
+```powershell
+npm run gate:phase5
+```
+
 ## What lives where
 
 - **ZAYDEN-owned scaffolding:** `apps/`, `runtime/`, `tests/`, `docs/`, `scripts/`, `package.json`

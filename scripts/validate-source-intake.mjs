@@ -126,6 +126,23 @@ function main() {
     must(existsSync(p), `Missing Phase 3 gateway artifact: ${p}`);
   }
 
+  const phase5Routing = [
+    join(REPO_ROOT, "runtime", "providers", "routing", "routing-policy.ts"),
+    join(REPO_ROOT, "runtime", "providers", "routing", "routing-types.ts"),
+    join(REPO_ROOT, "runtime", "providers", "routing", "fallback-policy.ts"),
+    join(REPO_ROOT, "runtime", "providers", "routing", "provider-selection.ts"),
+    join(REPO_ROOT, "runtime", "core", "runtime-orchestrator.ts"),
+    join(REPO_ROOT, "tests", "unit", "routing-policy.test.ts"),
+    join(REPO_ROOT, "tests", "unit", "fallback-policy.test.ts"),
+    join(REPO_ROOT, "tests", "integration", "provider-routing.test.ts"),
+    join(REPO_ROOT, "docs", "architecture", "provider-routing.md"),
+    join(REPO_ROOT, "docs", "phases", "phase-05-routing-policy.md"),
+    join(REPO_ROOT, "docs", "decisions", "ADR-0006-deterministic-provider-routing.md"),
+  ];
+  for (const p of phase5Routing) {
+    must(existsSync(p), `Missing Phase 5 routing artifact: ${p}`);
+  }
+
   const hashesPath = join(REPO_ROOT, "docs", "intake", "artifact-hashes.json");
   must(existsSync(hashesPath), `Missing fingerprint registry: ${hashesPath}`);
   const registry = readJson(hashesPath);

@@ -12,6 +12,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 - Phase 4 local provider bridges (`gemma-http`, `gemma-cli`) + shared HTTP/process bridge utilities
 - Provider bridge integration tests (`tests/integration/provider-bridge.test.ts`) and docs (`docs/providers/bridge-local-runtime.md`)
 - ADR-0005 for execution bridge isolation and normalized provider errors
+- Phase 5 deterministic routing policy layer (`runtime/providers/routing/*`) + runtime orchestrator
+- Routing unit/integration coverage (`tests/unit/routing-policy.test.ts`, `tests/unit/fallback-policy.test.ts`, `tests/integration/provider-routing.test.ts`)
+- ADR-0006 and architecture guide for observable fallback routing (`docs/architecture/provider-routing.md`)
 - OpenClaude adaptation framing doc (`docs/architecture/openclaude-adaptation-plan.md`) + ADR-0004
 - Phase 2 JSON Schema contracts for chat/provider/tool/error/memory/inspection (`runtime/contracts/*.schema.json`)
 - Strict Ajv validation layer (`runtime/contracts/validators.ts`) + TypeScript exports (`runtime/contracts/index.ts`)
