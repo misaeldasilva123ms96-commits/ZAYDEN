@@ -8,10 +8,13 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ### Added
 
-- Phase 1 governed repository scaffold (architecture docs, audits, ADRs)
-- Deterministic intake unpack script (`scripts/unpack-intake.ps1`)
+- Phase 0 forensic audits + source classification matrix (`docs/audits/*`, `docs/audits/SOURCE-CLASSIFICATION-MATRIX.md`)
+- Phase 1 foundation repository layout (`apps/`, `runtime/{contracts,providers,tools}`, `tests/`, `docs/{phases,runbooks,providers}`, `.github/workflows/ci.yml`)
+- Deterministic intake unpack script targeting `research/` (`scripts/unpack-intake.ps1`)
+- Legacy layout migration helper (`scripts/migrate-sources-to-research.ps1`)
 - Deterministic intake validator (`scripts/validate-source-intake.mjs`)
 - Pinned artifact fingerprint registry (`docs/intake/artifact-hashes.json`)
-- Gemma model manifest metadata (`sources/models/manifests/gemma-2-2b-it-f32.manifest.json`)
-- Baseline tests (`test/intake-registry.test.mjs`)
+- Gemma model manifest metadata (`research/source-models/manifests/gemma-2-2b-it-f32.manifest.json`)
+- Baseline unit tests (`tests/unit/intake-registry.test.mjs`)
+- Root engineering files (`ARCHITECTURE.md`, `ROADMAP.md`, `LICENSE`, `.editorconfig`, `.env.example`)
 - Runtime layer scaffolds and observability event schema stub

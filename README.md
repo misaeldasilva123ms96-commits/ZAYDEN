@@ -2,9 +2,9 @@
 
 ZAYDEN is a **governed, architecture-first** program for integrating a multi-provider, local-first AI runtime **without** building a fragile monolith.
 
-This repository is intentionally staged behind **gates** (deterministic checks, documentation, provenance). Phase 1 establishes **Source Intake** only.
+This repository is intentionally staged behind **gates** (deterministic checks, documentation, provenance).
 
-## Quickstart (Phase 1)
+## Quickstart (Phase 0/1)
 
 1. Place the vendor archives at the repository root (they are **not committed** to git; integrity is pinned in `docs/intake/artifact-hashes.json`):
 
@@ -17,12 +17,16 @@ Optional local model archive (also not committed):
 
 - `gemma-2-2b-it-f32.zip`
 
-See `docs/intake/PHASE-01-SOURCE-INTAKE-REPORT.md` for classification and gate semantics.
-
-2. Unpack governed trees:
+2. Unpack governed trees into `research/`:
 
 ```powershell
 .\scripts\unpack-intake.ps1
+```
+
+If you previously used the legacy `sources/*` layout locally:
+
+```powershell
+npm run intake:migrate
 ```
 
 3. Validate intake + run tests:
@@ -33,23 +37,24 @@ npm run gate:intake
 
 ## What lives where
 
-- **ZAYDEN-owned scaffolding:** `docs/`, `runtime/` (stubs), `scripts/`, `test/`, `package.json`
-- **Upstream intake (unpacked, gitignored):** `sources/intake/`, `sources/study/`, `sources/reference/`
-- **Model metadata (committed):** `sources/models/manifests/`
-- **Large model archive (local-only by default):** `gemma-2-2b-it-f32.zip` (gitignored)
+- **ZAYDEN-owned scaffolding:** `apps/`, `runtime/`, `tests/`, `docs/`, `scripts/`, `package.json`
+- **Forensic audits + classification matrix:** `docs/audits/*`
+- **Upstream/reference material (unpacked, gitignored):** `research/source-*`
+- **Model metadata (committed):** `research/source-models/manifests/`
 
 ## Documentation map
 
-- Architecture: `docs/architecture/`
-- Phase reports: `docs/intake/`
-- Source audits: `docs/audits/`
-- ADRs: `docs/decisions/`
-- Testing notes: `docs/testing/`
+- **Architecture entrypoint:** `ARCHITECTURE.md`
+- **Roadmap:** `ROADMAP.md`
+- **Phases:** `docs/phases/`
+- **Runbooks:** `docs/runbooks/`
+- **Audits:** `docs/audits/`
+- **ADRs:** `docs/decisions/`
 
 ## Provenance and safety posture
 
-OpenClaude upstream carries explicit proprietary provenance notices. Reference prompt material is isolated and **must not** be copied verbatim into product logic. See `docs/PROVENANCE.md` and `docs/audits/REFERENCE-system-prompts-leaks.md`.
+See `docs/PROVENANCE.md` and the Phase 0 forensic audits under `docs/audits/`.
 
 ## Status
 
-Phase 1 completes Source Intake scaffolding and validation. **This is not a claim of production readiness** for an end-to-end runtime.
+Phase 0/1 establishes **forensic intake + foundation scaffolding + gates**. **This is not a claim of production readiness** for an end-to-end runtime.

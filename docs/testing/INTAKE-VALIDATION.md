@@ -1,8 +1,8 @@
-# Testing — Intake gates (Phase 1)
+# Testing — Intake gates (Phase 0/1)
 
 ## Purpose
 
-Phase 1 validates **reproducibility** and **governed layout**, not model inference quality.
+These gates validate **reproducibility** and **governed layout**, not model inference quality.
 
 ## Commands
 
@@ -14,10 +14,10 @@ npm run gate:intake
 
 ## Preconditions
 
-- Vendor archives exist at repo root (`openclaude-main.zip`, `claw-code-main.zip`, `src.zip`, `system_prompts_leaks-main.zip`)
-- Unpacked trees exist under `sources/*` (use `scripts/unpack-intake.ps1`)
+- Vendor archives exist at repo root (see `README.md`)
+- Unpacked trees exist under `research/*` (use `scripts/unpack-intake.ps1`, or `npm run intake:migrate` from legacy `sources/*`)
 
 ## Notes
 
 - `gemma-2-2b-it-f32.zip` may be absent locally; the validator emits a **warning** but still passes if other gates succeed.
-- When present, the validator checks **byte size** against `sources/models/manifests/gemma-2-2b-it-f32.manifest.json`.
+- When present, the validator checks **byte size** against `research/source-models/manifests/gemma-2-2b-it-f32.manifest.json`.

@@ -9,7 +9,8 @@
   },
   "scripts": {
     "intake:validate": "node scripts/validate-source-intake.mjs",
-    "test": "node --test",
+    "intake:migrate": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/migrate-sources-to-research.ps1",
+    "test": "node --test tests/unit/intake-registry.test.mjs",
     "gate:intake": "npm run intake:validate && npm test"
   }
 }

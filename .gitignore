@@ -25,6 +25,15 @@ Thumbs.db
 *.gguf
 
 # Reproducible third-party trees (unpack from vendor zips using scripts/unpack-intake.ps1)
+/research/source-openclaude/
+/research/source-claw-code/
+/research/source-src-partial/
+/research/source-prompts-reference/
+
+# Legacy layout (older iterations)
 /sources/intake/
 /sources/study/
 /sources/reference/
+
+# Temp extract dirs (defensive)
+/research/_tmp_*/

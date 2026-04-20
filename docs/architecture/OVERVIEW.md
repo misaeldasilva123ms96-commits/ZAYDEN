@@ -16,13 +16,13 @@ The authoritative layer decomposition lives in `docs/architecture/LAYER-MODEL.md
 
 ## Current implementation status
 
-- **Phase 1 (Source Intake):** repository skeleton, intake unpack script, fingerprint registry, intake validator, baseline documentation, and contract stubs under `runtime/core/`.
-- **Runtime execution:** not yet implemented as a ZAYDEN-owned service; upstream `openclaude-main` remains an **isolated intake artifact** until a later phase defines adapter boundaries.
+- **Phase 0/1 (Forensic intake + foundation):** repository skeleton, `research/` unpack layout, fingerprint registry, intake validator, baseline documentation, and contract stubs under `runtime/contracts/`.
+- **Runtime execution:** not yet implemented as a ZAYDEN-owned service; upstream OpenClaude remains an **isolated research artifact** until a later phase defines adapter boundaries.
 
 ## Traceability rule
 
 Any logic derived from imported sources must be traceable via:
 
-- `docs/audits/SOURCE-*.md`
+- `docs/audits/*-audit.md` and `docs/audits/SOURCE-CLASSIFICATION-MATRIX.md`
 - `docs/decisions/ADR-*.md`
-- phase reports under `docs/intake/`
+- phase reports under `docs/phases/`

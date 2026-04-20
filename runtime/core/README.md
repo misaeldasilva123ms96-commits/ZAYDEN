@@ -1,11 +1,11 @@
 # Runtime core (ZAYDEN-owned)
 
-This directory will contain ZAYDEN-owned orchestration code and stable internal contracts.
+This directory will contain ZAYDEN-owned orchestration code.
+
+## Contracts
+
+Stable cross-boundary types live under `runtime/contracts/` (not here), to keep import graphs predictable for future packaging.
 
 ## Phase 1 status
 
-Only **contract stubs** exist (`contracts.mjs`). No orchestration loop is implemented yet.
-
-## Design rule (charter)
-
-Prefer **wrappers/adapters/bridges** over invasive rewrites of upstream intake trees.
+Orchestration code is not implemented yet — only documentation and repository scaffolding exist.

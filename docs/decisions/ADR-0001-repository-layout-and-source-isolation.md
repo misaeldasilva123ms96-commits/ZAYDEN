@@ -10,11 +10,11 @@ ZAYDEN is a governed integration program assembling multiple third-party assets 
 
 ## Decision
 
-1. **Operational base candidate (not yet merged into a ZAYDEN-owned runtime implementation):** `sources/intake/openclaude-main/` unpacked from `openclaude-main.zip`.
-2. **Harness inspiration (isolated):** `sources/intake/claw-code-main/`.
-3. **Architecture study material (explicitly incomplete):** `sources/study/src/` unpacked from `src.zip`.
-4. **Reference-only research material (non-trusted baseline):** `sources/reference/system-prompts-leaks/` unpacked from `system_prompts_leaks-main.zip`, governed by `docs/audits/REFERENCE-system-prompts-leaks.md`.
-5. **Model asset metadata (not the binary):** `sources/models/manifests/` contains machine-readable manifests; large archives remain local-only by default (`.gitignore`).
+1. **Operational base candidate (not yet merged into a ZAYDEN-owned runtime implementation):** `research/source-openclaude/` unpacked from `openclaude-main.zip` (see `docs/decisions/ADR-0002-research-layout-and-phase1-foundation.md`).
+2. **Harness inspiration (isolated):** `research/source-claw-code/`.
+3. **Architecture study material (explicitly incomplete):** `research/source-src-partial/` unpacked from `src.zip` (flattened `src/` contents).
+4. **Reference-only research material (non-trusted baseline):** `research/source-prompts-reference/` unpacked from `system_prompts_leaks-main.zip`, governed by `docs/audits/system-prompts-research-audit.md`.
+5. **Model asset metadata (not the binary):** `research/source-models/manifests/` contains machine-readable manifests; large archives remain local-only by default (`.gitignore`).
 
 ## Rationale
 

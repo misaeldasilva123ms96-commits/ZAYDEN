@@ -1,57 +1,97 @@
 #Requires -Version 5.1
 <#
 .SYNOPSIS
-  Unpacks ZAYDEN vendor archives into governed intake folders.
+  Unpacks ZAYDEN vendor archives into governed `research/` folders (Phase 0/1 layout).
 
 .NOTES
-  Origin: ZAYDEN Phase 1 — Source Intake (reproducible layout).
-  This script is a thin orchestration wrapper over Expand-Archive (no third-party deps).
+  Traceability: docs/runbooks/intake.md
 #>
 $ErrorActionPreference = "Stop"
 $Root = Resolve-Path (Join-Path $PSScriptRoot "..")
 Set-Location -LiteralPath $Root
 
-function Require-Zip($name) {
+function Require-Zip([string]$name) {
   $p = Join-Path $Root $name
   if (-not (Test-Path -LiteralPath $p)) {
     throw "Missing archive: $p"
   }
-  return $p
 }
 
-Require-Zip "openclaude-main.zip" | Out-Null
-Require-Zip "claw-code-main.zip" | Out-Null
-Require-Zip "src.zip" | Out-Null
-Require-Zip "system_prompts_leaks-main.zip" | Out-Null
+function MustExist([string]$p) {
+  if (-not (Test-Path -LiteralPath $p)) {
+    throw "Unexpected archive layout, missing: $p"
+  }
+}
 
-New-Item -ItemType Directory -Force -Path (Join-Path $Root "sources\intake") | Out-Null
-New-Item -ItemType Directory -Force -Path (Join-Path $Root "sources\study") | Out-Null
-New-Item -ItemType Directory -Force -Path (Join-Path $Root "sources\reference") | Out-Null
+function Ensure-Dir([string]$rel) {
+  $abs = Join-Path $Root $rel
+  New-Item -ItemType Directory -Force -Path $abs | Out-Null
+}
 
-Write-Host "Unpacking openclaude-main.zip -> sources/intake/"
-Expand-Archive -LiteralPath (Join-Path $Root "openclaude-main.zip") -DestinationPath (Join-Path $Root "sources\intake") -Force
+function Expand-ToTemp([string]$zipName) {
+  Ensure-Dir "research"
+  $tmp = Join-Path $Root ("research\\_tmp_" + [Guid]::NewGuid().ToString("N"))
+  New-Item -ItemType Directory -Force -Path $tmp | Out-Null
+  Expand-Archive -LiteralPath (Join-Path $Root $zipName) -DestinationPath $tmp -Force
+  return $tmp
+}
 
-Write-Host "Unpacking claw-code-main.zip -> sources/intake/"
-Expand-Archive -LiteralPath (Join-Path $Root "claw-code-main.zip") -DestinationPath (Join-Path $Root "sources\intake") -Force
-
-Write-Host "Unpacking src.zip -> sources/study/"
-Expand-Archive -LiteralPath (Join-Path $Root "src.zip") -DestinationPath (Join-Path $Root "sources\study") -Force
-
-Write-Host "Unpacking system_prompts_leaks-main.zip -> sources/reference/"
-Expand-Archive -LiteralPath (Join-Path $Root "system_prompts_leaks-main.zip") -DestinationPath (Join-Path $Root "sources\reference") -Force
-
-$inner = Join-Path $Root "sources\reference\system_prompts_leaks-main"
-$dest = Join-Path $Root "sources\reference\system-prompts-leaks"
-if (Test-Path -LiteralPath $inner) {
-  New-Item -ItemType Directory -Force -Path $dest | Out-Null
-  Get-ChildItem -LiteralPath $inner -Force | ForEach-Object {
-    $target = Join-Path $dest $_.Name
+function Move-Children([string]$srcDir, [string]$dstRel) {
+  $dstAbs = Join-Path $Root $dstRel
+  New-Item -ItemType Directory -Force -Path $dstAbs | Out-Null
+  Get-ChildItem -LiteralPath $srcDir -Force | ForEach-Object {
+    $target = Join-Path $dstAbs $_.Name
     if (Test-Path -LiteralPath $target) {
       Remove-Item -LiteralPath $target -Recurse -Force
     }
-    Move-Item -LiteralPath $_.FullName -Destination $dest -Force
+    Move-Item -LiteralPath $_.FullName -Destination $dstAbs -Force
   }
-  Remove-Item -LiteralPath $inner -Recurse -Force
 }
 
+Require-Zip "openclaude-main.zip"
+Require-Zip "claw-code-main.zip"
+Require-Zip "src.zip"
+Require-Zip "system_prompts_leaks-main.zip"
+
+Write-Host "Unpacking openclaude-main.zip -> research/source-openclaude/"
+$tmp = Expand-ToTemp "openclaude-main.zip"
+try {
+  $inner = Join-Path $tmp "openclaude-main"
+  MustExist $inner
+  Move-Children $inner "research\\source-openclaude"
+} finally {
+  Remove-Item -LiteralPath $tmp -Recurse -Force -ErrorAction SilentlyContinue
+}
+
+Write-Host "Unpacking claw-code-main.zip -> research/source-claw-code/"
+$tmp = Expand-ToTemp "claw-code-main.zip"
+try {
+  $inner = Join-Path $tmp "claw-code-main"
+  MustExist $inner
+  Move-Children $inner "research\\source-claw-code"
+} finally {
+  Remove-Item -LiteralPath $tmp -Recurse -Force -ErrorAction SilentlyContinue
+}
+
+Write-Host "Unpacking src.zip -> research/source-src-partial/ (flatten src/)"
+$tmp = Expand-ToTemp "src.zip"
+try {
+  $inner = Join-Path $tmp "src"
+  MustExist $inner
+  Move-Children $inner "research\\source-src-partial"
+} finally {
+  Remove-Item -LiteralPath $tmp -Recurse -Force -ErrorAction SilentlyContinue
+}
+
+Write-Host "Unpacking system_prompts_leaks-main.zip -> research/source-prompts-reference/"
+$tmp = Expand-ToTemp "system_prompts_leaks-main.zip"
+try {
+  $inner = Join-Path $tmp "system_prompts_leaks-main"
+  MustExist $inner
+  Move-Children $inner "research\\source-prompts-reference"
+} finally {
+  Remove-Item -LiteralPath $tmp -Recurse -Force -ErrorAction SilentlyContinue
+}
+
+Ensure-Dir "research\\source-models\\manifests"
 Write-Host "Done. Next: npm run intake:validate"

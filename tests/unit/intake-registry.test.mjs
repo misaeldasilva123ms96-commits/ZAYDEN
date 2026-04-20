@@ -6,7 +6,7 @@ import { fileURLToPath } from "node:url";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
-const REPO_ROOT = join(__dirname, "..");
+const REPO_ROOT = join(__dirname, "..", "..");
 
 test("artifact-hashes.json contains pinned SHA-256 for all small archives", () => {
   const p = join(REPO_ROOT, "docs", "intake", "artifact-hashes.json");
@@ -20,7 +20,7 @@ test("artifact-hashes.json contains pinned SHA-256 for all small archives", () =
 });
 
 test("gemma manifest pins expected archive size and declares integration rule", () => {
-  const p = join(REPO_ROOT, "sources", "models", "manifests", "gemma-2-2b-it-f32.manifest.json");
+  const p = join(REPO_ROOT, "research", "source-models", "manifests", "gemma-2-2b-it-f32.manifest.json");
   const json = JSON.parse(readFileSync(p, "utf8"));
   assert.equal(json.asset_id, "gemma-2-2b-it-f32");
   assert.equal(json.expected_archive_size_bytes, 4629837305);

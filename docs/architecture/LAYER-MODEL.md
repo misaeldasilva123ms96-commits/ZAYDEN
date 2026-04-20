@@ -40,7 +40,7 @@ This document defines the **target** layering for ZAYDEN. It is not a claim that
 
 **Phase 1 implementation**
 
-- Scaffold README only: `runtime/provider-gateway/README.md`
+- Scaffold README only: `runtime/providers/README.md`
 
 ## Layer 4 — Tooling & Execution
 
@@ -80,7 +80,7 @@ This document defines the **target** layering for ZAYDEN. It is not a claim that
 
 **Phase 1 implementation**
 
-- Node built-in tests under `test/`
+- Node built-in tests under `tests/`
 - Gate script: `npm run gate:intake`
 
 ## Layer 8 — Documentation

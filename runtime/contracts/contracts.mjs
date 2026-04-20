@@ -3,9 +3,10 @@
  *
  * Traceability:
  * - docs/decisions/ADR-0001-repository-layout-and-source-isolation.md
+ * - docs/decisions/ADR-0002-research-layout-and-phase1-foundation.md
  * - docs/architecture/LAYER-MODEL.md
  *
- * NOTE: This file is ZAYDEN-owned. It must not import code from `sources/intake/*`.
+ * NOTE: This file is ZAYDEN-owned. It must not import code from `research/source-*`.
  */
 
 /** @typedef {'local' | 'cloud' | 'hybrid'} ZaydenRuntimeMode */
