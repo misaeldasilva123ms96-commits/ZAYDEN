@@ -6,13 +6,15 @@ Phase 3 introduces the **execution boundary** between ZAYDEN core and external m
 
 - `base/` — `ProviderAdapter` interface, shared types (aliases of contract mirrors), errors
 - `registry/` — `ProviderRegistry` + `ProviderGateway` (validates ingress/egress with Ajv)
-- `adapters/` — concrete adapters (`mock`, `gemma-local` stub, future bridges)
+- `adapters/` — concrete adapters (`mock`, `gemma-local`, `gemma-http`, `gemma-cli`)
+- `adapters/shared/` — isolated external I/O helpers (`http-client`, `process-runner`)
 
 ## Rules
 
-- **Never** import `research/*` from adapters in this phase.
+- **Never** import `research/*` from adapters.
 - **Never** return vendor SDK objects from `execute()` — only `ProviderResponse` contract objects.
 - Gateway **must** call `assertValidProviderRequest` / `assertValidProviderResponse` (no bypass).
+- External dependencies (HTTP/process) must stay under adapters only.
 
 ## Usage sketch
 

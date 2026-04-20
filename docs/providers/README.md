@@ -1,7 +1,8 @@
-# Provider documentation (scaffold)
+# Provider documentation
 
-This directory will contain operator-facing documentation for supported providers (cloud APIs, local runtimes, GGUF routing).
+Operator-facing docs for supported providers and bridge execution modes.
 
-## Phase status
+## Current docs
 
-Scaffold only — add provider-specific runbooks as adapters land.
+- `docs/providers/bridge-local-runtime.md` — HTTP/CLI/simulated local bridge behavior
+- `docs/providers/local-gemma.md` — Gemma quick entrypoint

@@ -113,8 +113,14 @@ function main() {
     join(REPO_ROOT, "runtime", "providers", "adapters", "mock", "mock.adapter.ts"),
     join(REPO_ROOT, "runtime", "providers", "adapters", "local", "gemma-local.adapter.ts"),
     join(REPO_ROOT, "runtime", "providers", "adapters", "local", "gemma-local.health.ts"),
+    join(REPO_ROOT, "runtime", "providers", "adapters", "local", "gemma-http.adapter.ts"),
+    join(REPO_ROOT, "runtime", "providers", "adapters", "local", "gemma-cli.adapter.ts"),
+    join(REPO_ROOT, "runtime", "providers", "adapters", "shared", "http-client.ts"),
+    join(REPO_ROOT, "runtime", "providers", "adapters", "shared", "process-runner.ts"),
     join(REPO_ROOT, "runtime", "core", "orchestrator-skeleton.ts"),
     join(REPO_ROOT, "docs", "architecture", "openclaude-adaptation-plan.md"),
+    join(REPO_ROOT, "docs", "providers", "bridge-local-runtime.md"),
+    join(REPO_ROOT, "tests", "integration", "provider-bridge.test.ts"),
   ];
   for (const p of phase3Gateway) {
     must(existsSync(p), `Missing Phase 3 gateway artifact: ${p}`);

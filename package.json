@@ -13,10 +13,11 @@
     "test": "npm run test:unit && npm run test:contracts && npm run test:integration",
     "test:unit": "node --test tests/unit/intake-registry.test.mjs",
     "test:contracts": "tsx --test tests/contracts/chat-contract.test.ts tests/contracts/provider-contract.test.ts tests/contracts/error-contract.test.ts tests/contracts/runtime-inspection.test.ts",
-    "test:integration": "tsx --test tests/integration/provider-gateway.test.ts",
+    "test:integration": "tsx --test tests/integration/provider-gateway.test.ts tests/integration/provider-bridge.test.ts",
     "typecheck": "tsc -p tsconfig.json",
     "gate:intake": "npm run intake:validate && npm test",
-    "gate:phase2": "npm run typecheck && npm run test:contracts"
+    "gate:phase2": "npm run typecheck && npm run test:contracts",
+    "gate:phase4": "npm run typecheck && npm run test:integration"
   },
   "devDependencies": {
     "@types/node": "^22.10.0",

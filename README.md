@@ -41,7 +41,13 @@ npm run gate:intake
 npm run gate:phase2
 ```
 
-5. Provider gateway (Phase 3) is covered by `npm test` (includes integration tests) and `npm run typecheck`.
+5. Provider gateway and local bridges (Phase 3/4) are covered by `npm test` (includes integration tests) and `npm run typecheck`.
+
+6. Optional bridge-only gate:
+
+```powershell
+npm run gate:phase4
+```
 
 ## What lives where
 
