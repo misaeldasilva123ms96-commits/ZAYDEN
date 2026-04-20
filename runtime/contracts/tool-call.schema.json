@@ -1,0 +1,42 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://zayden.local/schemas/runtime/1-0-0/tool-call.schema.json",
+  "title": "ZaydenToolCall",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "contract_version",
+    "tool_call_id",
+    "tool_name",
+    "arguments",
+    "status"
+  ],
+  "properties": {
+    "contract_version": {
+      "type": "string",
+      "enum": ["1.0.0"]
+    },
+    "tool_call_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "tool_name": {
+      "type": "string",
+      "minLength": 1
+    },
+    "arguments": {
+      "type": "object",
+      "additionalProperties": true,
+      "description": "JSON-serializable arguments; validated further by tool registry in later phases."
+    },
+    "status": {
+      "type": "string",
+      "enum": ["pending", "completed", "error"]
+    },
+    "result": {
+      "description": "Optional tool result envelope (opaque at contract layer).",
+      "type": ["object", "null"],
+      "additionalProperties": true
+    }
+  }
+}

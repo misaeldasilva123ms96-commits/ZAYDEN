@@ -1,0 +1,77 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://zayden.local/schemas/runtime/1-0-0/chat-request.schema.json",
+  "title": "ZaydenChatRequest",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "contract_version",
+    "session_id",
+    "input",
+    "system_policy",
+    "tool_policy",
+    "memory_context",
+    "requested_mode",
+    "metadata"
+  ],
+  "properties": {
+    "contract_version": {
+      "type": "string",
+      "enum": ["1.0.0"]
+    },
+    "session_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "input": {
+      "type": "string",
+      "description": "Primary user input for this turn."
+    },
+    "system_policy": {
+      "type": "object",
+      "additionalProperties": true,
+      "required": ["contract_version"],
+      "properties": {
+        "contract_version": { "type": "string", "enum": ["1.0.0"] },
+        "safety": {
+          "type": "object",
+          "additionalProperties": true,
+          "description": "Forward-compatible safety knobs (interpreted by policy engine later)."
+        }
+      }
+    },
+    "tool_policy": {
+      "type": "object",
+      "additionalProperties": true,
+      "required": ["contract_version"],
+      "properties": {
+        "contract_version": { "type": "string", "enum": ["1.0.0"] },
+        "allow_tools": { "type": ["boolean", "null"] },
+        "allowed_tool_names": {
+          "type": "array",
+          "items": { "type": "string" }
+        }
+      }
+    },
+    "memory_context": {
+      "$ref": "https://zayden.local/schemas/runtime/1-0-0/memory-context.schema.json"
+    },
+    "requested_mode": {
+      "type": "string",
+      "enum": ["LOCAL_ONLY", "CLOUD_ONLY", "HYBRID", "SAFE_FALLBACK"]
+    },
+    "requested_provider": {
+      "type": ["string", "null"],
+      "description": "Optional explicit provider id; routing may ignore if incompatible with policy."
+    },
+    "metadata": {
+      "type": "object",
+      "additionalProperties": true,
+      "description": "Client metadata (trace ids, feature flags).",
+      "required": ["contract_version"],
+      "properties": {
+        "contract_version": { "type": "string", "enum": ["1.0.0"] }
+      }
+    }
+  }
+}

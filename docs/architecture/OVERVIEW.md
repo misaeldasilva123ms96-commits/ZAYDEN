@@ -14,9 +14,12 @@ ZAYDEN is a **governed integration program** for building a modular AI runtime. 
 
 The authoritative layer decomposition lives in `docs/architecture/LAYER-MODEL.md`.
 
+Runtime JSON contracts (Phase 2) are documented in `docs/architecture/runtime-contracts.md`.
+
 ## Current implementation status
 
-- **Phase 0/1 (Forensic intake + foundation):** repository skeleton, `research/` unpack layout, fingerprint registry, intake validator, baseline documentation, and contract stubs under `runtime/contracts/`.
+- **Phase 0/1 (Forensic intake + foundation):** repository skeleton, `research/` unpack layout, fingerprint registry, intake validator, baseline documentation.
+- **Phase 2 (Contract-first runtime):** JSON Schemas + Ajv validators + contract tests (`docs/architecture/runtime-contracts.md`).
 - **Runtime execution:** not yet implemented as a ZAYDEN-owned service; upstream OpenClaude remains an **isolated research artifact** until a later phase defines adapter boundaries.
 
 ## Traceability rule

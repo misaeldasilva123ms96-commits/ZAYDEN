@@ -1,0 +1,67 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://zayden.local/schemas/runtime/1-0-0/runtime-inspection.schema.json",
+  "title": "ZaydenRuntimeInspection",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "contract_version",
+    "runtime_mode",
+    "execution_path",
+    "provider_chain",
+    "fallback_triggered",
+    "tool_execution_count",
+    "latency_ms",
+    "warnings"
+  ],
+  "properties": {
+    "contract_version": {
+      "type": "string",
+      "enum": ["1.0.0"]
+    },
+    "runtime_mode": {
+      "type": "string",
+      "enum": ["LOCAL_ONLY", "CLOUD_ONLY", "HYBRID", "SAFE_FALLBACK"]
+    },
+    "execution_path": {
+      "type": "array",
+      "description": "Ordered high-level steps (e.g. POLICY_CHECK, PROVIDER_CALL).",
+      "items": { "type": "string", "minLength": 1 }
+    },
+    "provider_chain": {
+      "type": "array",
+      "description": "Providers attempted or selected, in order.",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["name", "kind"],
+        "properties": {
+          "name": { "type": "string", "minLength": 1 },
+          "kind": {
+            "type": "string",
+            "enum": [
+              "openai_compatible",
+              "gemini",
+              "ollama",
+              "local_gguf",
+              "unknown"
+            ]
+          }
+        }
+      }
+    },
+    "fallback_triggered": { "type": "boolean" },
+    "tool_execution_count": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "latency_ms": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "warnings": {
+      "type": "array",
+      "items": { "type": "string" }
+    }
+  }
+}

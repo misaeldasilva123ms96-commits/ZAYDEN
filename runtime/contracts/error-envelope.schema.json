@@ -1,0 +1,41 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://zayden.local/schemas/runtime/1-0-0/error-envelope.schema.json",
+  "title": "ZaydenErrorEnvelope",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "contract_version",
+    "error_type",
+    "message",
+    "origin",
+    "recoverable",
+    "metadata"
+  ],
+  "properties": {
+    "contract_version": {
+      "type": "string",
+      "enum": ["1.0.0"]
+    },
+    "error_type": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Stable machine code (e.g. PROVIDER_TIMEOUT)."
+    },
+    "message": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Human-readable description safe for logs (no secrets)."
+    },
+    "origin": {
+      "type": "string",
+      "enum": ["runtime", "provider", "tool"]
+    },
+    "recoverable": { "type": "boolean" },
+    "metadata": {
+      "type": "object",
+      "additionalProperties": true,
+      "description": "Diagnostic metadata (codes, correlation ids); never secrets."
+    }
+  }
+}

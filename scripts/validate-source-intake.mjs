@@ -81,9 +81,28 @@ function main() {
     must(existsSync(join(REPO_ROOT, "docs", "audits", f)), `Missing forensic audit: docs/audits/${f}`);
   }
 
+  const phase2Contracts = [
+    "chat-request.schema.json",
+    "chat-response.schema.json",
+    "provider-request.schema.json",
+    "provider-response.schema.json",
+    "tool-call.schema.json",
+    "runtime-inspection.schema.json",
+    "error-envelope.schema.json",
+    "memory-context.schema.json",
+    "index.ts",
+    "validators.ts",
+    "schema-ids.ts",
+  ];
+  for (const f of phase2Contracts) {
+    must(
+      existsSync(join(REPO_ROOT, "runtime", "contracts", f)),
+      `Missing Phase 2 contract artifact: runtime/contracts/${f}`,
+    );
+  }
   must(
-    existsSync(join(REPO_ROOT, "runtime", "contracts", "contracts.mjs")),
-    "Missing ZAYDEN-owned runtime contracts: runtime/contracts/contracts.mjs",
+    existsSync(join(REPO_ROOT, "docs", "architecture", "runtime-contracts.md")),
+    "Missing Phase 2 contract documentation: docs/architecture/runtime-contracts.md",
   );
 
   const hashesPath = join(REPO_ROOT, "docs", "intake", "artifact-hashes.json");

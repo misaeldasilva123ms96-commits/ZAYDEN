@@ -1,0 +1,37 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://zayden.local/schemas/runtime/1-0-0/memory-context.schema.json",
+  "title": "ZaydenMemoryContext",
+  "type": "object",
+  "additionalProperties": true,
+  "required": ["contract_version"],
+  "properties": {
+    "contract_version": {
+      "type": "string",
+      "description": "Version of the memory-context envelope; bump only with ADR.",
+      "enum": ["1.0.0"]
+    },
+    "entries": {
+      "type": "array",
+      "description": "Optional ordered memory entries supplied to the runtime (content-addressable ids recommended).",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["id", "role", "text"],
+        "properties": {
+          "id": { "type": "string", "minLength": 1 },
+          "role": {
+            "type": "string",
+            "enum": ["system", "user", "assistant", "tool"]
+          },
+          "text": { "type": "string" }
+        }
+      }
+    },
+    "metadata": {
+      "type": "object",
+      "description": "Opaque-to-core metadata (TTL hints, storage keys, redaction flags).",
+      "additionalProperties": true
+    }
+  }
+}

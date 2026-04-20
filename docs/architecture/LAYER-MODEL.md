@@ -25,9 +25,9 @@ This document defines the **target** layering for ZAYDEN. It is not a claim that
 - Orchestration, routing, sessions, safety policy application
 - Stable internal contracts (types + invariants)
 
-**Phase 1 implementation**
+**Phase 2 implementation**
 
-- Contract stubs only: `runtime/core/contracts.mjs`
+- JSON Schema contracts + TS validators: `runtime/contracts/*.schema.json`, `runtime/contracts/validators.ts`
 
 ## Layer 3 — Provider Gateway
 

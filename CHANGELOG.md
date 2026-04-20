@@ -8,6 +8,11 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ### Added
 
+- Phase 2 JSON Schema contracts for chat/provider/tool/error/memory/inspection (`runtime/contracts/*.schema.json`)
+- Strict Ajv validation layer (`runtime/contracts/validators.ts`) + TypeScript exports (`runtime/contracts/index.ts`)
+- Contract test suite (`tests/contracts/*.test.ts`) + `npm run typecheck`
+- Architecture documentation for runtime contracts (`docs/architecture/runtime-contracts.md`)
+- ADR for contract versioning posture (`docs/decisions/ADR-0003-runtime-json-contracts-v1.md`)
 - Phase 0 forensic audits + source classification matrix (`docs/audits/*`, `docs/audits/SOURCE-CLASSIFICATION-MATRIX.md`)
 - Phase 1 foundation repository layout (`apps/`, `runtime/{contracts,providers,tools}`, `tests/`, `docs/{phases,runbooks,providers}`, `.github/workflows/ci.yml`)
 - Deterministic intake unpack script targeting `research/` (`scripts/unpack-intake.ps1`)

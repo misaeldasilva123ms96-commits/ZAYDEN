@@ -35,6 +35,12 @@ npm run intake:migrate
 npm run gate:intake
 ```
 
+4. Contract layer (Phase 2) checks (no `research/` dependency):
+
+```powershell
+npm run gate:phase2
+```
+
 ## What lives where
 
 - **ZAYDEN-owned scaffolding:** `apps/`, `runtime/`, `tests/`, `docs/`, `scripts/`, `package.json`

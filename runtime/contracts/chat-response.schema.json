@@ -1,0 +1,108 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://zayden.local/schemas/runtime/1-0-0/chat-response.schema.json",
+  "title": "ZaydenChatResponse",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "contract_version",
+    "session_id",
+    "output",
+    "runtime_mode",
+    "provider_requested",
+    "provider_actual",
+    "model",
+    "fallback_reason",
+    "tool_calls",
+    "observability",
+    "usage",
+    "error"
+  ],
+  "properties": {
+    "contract_version": {
+      "type": "string",
+      "enum": ["1.0.0"]
+    },
+    "session_id": { "type": "string", "minLength": 1 },
+    "output": { "type": "string" },
+    "runtime_mode": {
+      "type": "string",
+      "enum": ["LOCAL_ONLY", "CLOUD_ONLY", "HYBRID", "SAFE_FALLBACK"]
+    },
+    "provider_requested": {
+      "type": ["string", "null"],
+      "description": "What the caller asked for (may differ from actual)."
+    },
+    "provider_actual": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["kind", "name", "model"],
+      "properties": {
+        "kind": {
+          "type": "string",
+          "enum": [
+            "openai_compatible",
+            "gemini",
+            "ollama",
+            "local_gguf",
+            "unknown"
+          ]
+        },
+        "name": { "type": "string", "minLength": 1 },
+        "model": { "type": ["string", "null"] }
+      }
+    },
+    "model": {
+      "type": ["string", "null"]
+    },
+    "fallback_reason": {
+      "oneOf": [
+        { "type": "null" },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["did_fallback"],
+          "properties": {
+            "did_fallback": { "type": "boolean" },
+            "code": { "type": ["string", "null"] },
+            "detail": { "type": ["string", "null"] }
+          }
+        }
+      ]
+    },
+    "tool_calls": {
+      "type": "array",
+      "items": {
+        "$ref": "https://zayden.local/schemas/runtime/1-0-0/tool-call.schema.json"
+      }
+    },
+    "observability": {
+      "$ref": "https://zayden.local/schemas/runtime/1-0-0/runtime-inspection.schema.json"
+    },
+    "usage": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["contract_version"],
+      "properties": {
+        "contract_version": { "type": "string", "enum": ["1.0.0"] },
+        "input_tokens": { "type": ["integer", "null"], "minimum": 0 },
+        "output_tokens": { "type": ["integer", "null"], "minimum": 0 },
+        "total_tokens": { "type": ["integer", "null"], "minimum": 0 },
+        "provider_usage": { "type": "object", "additionalProperties": true }
+      }
+    },
+    "safety": {
+      "type": "object",
+      "additionalProperties": true,
+      "description": "Optional safety annotations for this response (policy engine output)."
+    },
+    "error": {
+      "oneOf": [
+        { "type": "null" },
+        {
+          "$ref": "https://zayden.local/schemas/runtime/1-0-0/error-envelope.schema.json"
+        }
+      ]
+    }
+  }
+}

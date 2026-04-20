@@ -1,0 +1,82 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://zayden.local/schemas/runtime/1-0-0/provider-response.schema.json",
+  "title": "ZaydenProviderResponse",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "contract_version",
+    "correlation_id",
+    "session_id",
+    "provider_actual",
+    "model",
+    "text",
+    "finish_reason",
+    "usage"
+  ],
+  "properties": {
+    "contract_version": {
+      "type": "string",
+      "enum": ["1.0.0"]
+    },
+    "correlation_id": {
+      "type": "string",
+      "minLength": 8
+    },
+    "session_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "provider_actual": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["kind", "name", "model"],
+      "properties": {
+        "kind": {
+          "type": "string",
+          "enum": [
+            "openai_compatible",
+            "gemini",
+            "ollama",
+            "local_gguf",
+            "unknown"
+          ]
+        },
+        "name": { "type": "string", "minLength": 1 },
+        "model": { "type": ["string", "null"] }
+      }
+    },
+    "model": {
+      "type": ["string", "null"],
+      "description": "Resolved model identifier (may duplicate provider_actual.model)."
+    },
+    "text": {
+      "type": "string",
+      "description": "Normalized assistant text output."
+    },
+    "finish_reason": {
+      "type": ["string", "null"]
+    },
+    "usage": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["contract_version"],
+      "properties": {
+        "contract_version": { "type": "string", "enum": ["1.0.0"] },
+        "input_tokens": { "type": ["integer", "null"], "minimum": 0 },
+        "output_tokens": { "type": ["integer", "null"], "minimum": 0 },
+        "total_tokens": { "type": ["integer", "null"], "minimum": 0 },
+        "provider_usage": {
+          "type": "object",
+          "additionalProperties": true,
+          "description": "Provider-specific usage fragments (opaque)."
+        }
+      }
+    },
+    "raw_metadata": {
+      "type": "object",
+      "additionalProperties": true,
+      "description": "Opaque provider metadata for logging only (not interpreted by contract validators)."
+    }
+  }
+}

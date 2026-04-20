@@ -1,0 +1,66 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://zayden.local/schemas/runtime/1-0-0/provider-request.schema.json",
+  "title": "ZaydenProviderRequest",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "contract_version",
+    "correlation_id",
+    "session_id",
+    "payload",
+    "parameters"
+  ],
+  "properties": {
+    "contract_version": {
+      "type": "string",
+      "enum": ["1.0.0"]
+    },
+    "correlation_id": {
+      "type": "string",
+      "minLength": 8,
+      "description": "Idempotency / tracing key for this provider attempt."
+    },
+    "session_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "provider_hint": {
+      "type": ["string", "null"],
+      "description": "Non-binding hint (routing chooses actual provider later)."
+    },
+    "payload": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["messages"],
+      "description": "Provider-agnostic normalized message list.",
+      "properties": {
+        "messages": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["role", "content"],
+            "properties": {
+              "role": {
+                "type": "string",
+                "enum": ["system", "user", "assistant", "tool"]
+              },
+              "content": { "type": "string" }
+            }
+          }
+        }
+      }
+    },
+    "parameters": {
+      "type": "object",
+      "additionalProperties": true,
+      "description": "Optional numeric/string knobs (temperature, max_tokens, etc.).",
+      "properties": {
+        "temperature": { "type": ["number", "null"] },
+        "max_output_tokens": { "type": ["integer", "null"], "minimum": 1 }
+      }
+    }
+  }
+}

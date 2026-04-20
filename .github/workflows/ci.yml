@@ -13,5 +13,7 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: "22"
-      - name: Unit tests (repo-owned)
+      - name: Typecheck (contracts + TS surface)
+        run: npm run typecheck
+      - name: Tests (unit + contracts)
         run: npm test
