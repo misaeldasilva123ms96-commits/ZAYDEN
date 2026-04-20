@@ -1,11 +1,9 @@
 # Runtime core (ZAYDEN-owned)
 
-This directory will contain ZAYDEN-owned orchestration code.
+Orchestration and composition live here.
 
-## Contracts
+## Phase 3 skeleton
 
-Stable cross-boundary types live under `runtime/contracts/` (not here), to keep import graphs predictable for future packaging.
+- `orchestrator-skeleton.ts` — minimal wiring of contract validators + provider registry + gateway (mock adapter only).
 
-## Phase 1 status
-
-Orchestration code is not implemented yet — only documentation and repository scaffolding exist.
+Contracts remain under `runtime/contracts/`; adapters under `runtime/providers/`.

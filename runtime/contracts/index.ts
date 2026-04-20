@@ -7,6 +7,16 @@
 export { SCHEMA_IDS } from "./schema-ids.js";
 export { createContractValidators, outcome } from "./validators.js";
 export type {
+  ProviderActual,
+  ProviderKind,
+  ProviderRequest,
+  ProviderRequestMessage,
+  ProviderRequestParameters,
+  ProviderRequestPayload,
+  ProviderResponse,
+  ProviderResponseUsage,
+} from "./types-provider.js";
+export type {
   ContractValidators,
   ValidationFailure,
   ValidationOutcome,
@@ -50,22 +60,9 @@ export type RequestedMode =
   | "HYBRID"
   | "SAFE_FALLBACK";
 
-export type ProviderKind =
-  | "openai_compatible"
-  | "gemini"
-  | "ollama"
-  | "local_gguf"
-  | "unknown";
-
 export type ErrorOrigin = "runtime" | "provider" | "tool";
 
 export type ToolCallStatus = "pending" | "completed" | "error";
-
-export interface ProviderActual {
-  kind: ProviderKind;
-  name: string;
-  model: string | null;
-}
 
 export interface FallbackReason {
   did_fallback: boolean;

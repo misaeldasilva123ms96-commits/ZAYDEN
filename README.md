@@ -41,6 +41,8 @@ npm run gate:intake
 npm run gate:phase2
 ```
 
+5. Provider gateway (Phase 3) is covered by `npm test` (includes integration tests) and `npm run typecheck`.
+
 ## What lives where
 
 - **ZAYDEN-owned scaffolding:** `apps/`, `runtime/`, `tests/`, `docs/`, `scripts/`, `package.json`

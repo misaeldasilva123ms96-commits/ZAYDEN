@@ -38,9 +38,10 @@ This document defines the **target** layering for ZAYDEN. It is not a claim that
 - Cloud provider routing
 - Explicit fallback reasons (observable)
 
-**Phase 1 implementation**
+**Phase 3 implementation**
 
-- Scaffold README only: `runtime/providers/README.md`
+- `ProviderRegistry` + `ProviderGateway` (`runtime/providers/registry/provider-registry.ts`)
+- Adapters: `runtime/providers/adapters/mock/mock.adapter.ts`, `runtime/providers/adapters/local/gemma-local.adapter.ts`
 
 ## Layer 4 — Tooling & Execution
 

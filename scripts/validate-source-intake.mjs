@@ -105,6 +105,21 @@ function main() {
     "Missing Phase 2 contract documentation: docs/architecture/runtime-contracts.md",
   );
 
+  const phase3Gateway = [
+    join(REPO_ROOT, "runtime", "providers", "base", "provider.interface.ts"),
+    join(REPO_ROOT, "runtime", "providers", "base", "provider.types.ts"),
+    join(REPO_ROOT, "runtime", "providers", "base", "provider.errors.ts"),
+    join(REPO_ROOT, "runtime", "providers", "registry", "provider-registry.ts"),
+    join(REPO_ROOT, "runtime", "providers", "adapters", "mock", "mock.adapter.ts"),
+    join(REPO_ROOT, "runtime", "providers", "adapters", "local", "gemma-local.adapter.ts"),
+    join(REPO_ROOT, "runtime", "providers", "adapters", "local", "gemma-local.health.ts"),
+    join(REPO_ROOT, "runtime", "core", "orchestrator-skeleton.ts"),
+    join(REPO_ROOT, "docs", "architecture", "openclaude-adaptation-plan.md"),
+  ];
+  for (const p of phase3Gateway) {
+    must(existsSync(p), `Missing Phase 3 gateway artifact: ${p}`);
+  }
+
   const hashesPath = join(REPO_ROOT, "docs", "intake", "artifact-hashes.json");
   must(existsSync(hashesPath), `Missing fingerprint registry: ${hashesPath}`);
   const registry = readJson(hashesPath);

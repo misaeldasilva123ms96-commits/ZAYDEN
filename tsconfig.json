@@ -13,5 +13,11 @@
     "isolatedModules": true,
     "types": ["node"]
   },
-  "include": ["runtime/contracts/**/*.ts", "tests/contracts/**/*.ts"]
+  "include": [
+    "runtime/contracts/**/*.ts",
+    "runtime/core/**/*.ts",
+    "runtime/providers/**/*.ts",
+    "tests/contracts/**/*.ts",
+    "tests/integration/**/*.ts"
+  ]
 }

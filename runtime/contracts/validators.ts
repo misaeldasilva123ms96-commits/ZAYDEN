@@ -11,6 +11,7 @@ import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 
 import { SCHEMA_IDS } from "./schema-ids.js";
+import type { ProviderRequest, ProviderResponse } from "./types-provider.js";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
@@ -42,6 +43,8 @@ export interface ContractValidators {
   validateMemoryContext: ValidateFunction;
   assertValidChatRequest(data: unknown): asserts data is Record<string, unknown>;
   assertValidChatResponse(data: unknown): asserts data is Record<string, unknown>;
+  assertValidProviderRequest(data: unknown): asserts data is ProviderRequest;
+  assertValidProviderResponse(data: unknown): asserts data is ProviderResponse;
 }
 
 export function createContractValidators(): ContractValidators {
@@ -115,6 +118,12 @@ export function createContractValidators(): ContractValidators {
     },
     assertValidChatResponse(data: unknown) {
       assertValid("chat-response", vChatResponse, data);
+    },
+    assertValidProviderRequest(data: unknown): asserts data is ProviderRequest {
+      assertValid("provider-request", vProviderRequest, data);
+    },
+    assertValidProviderResponse(data: unknown): asserts data is ProviderResponse {
+      assertValid("provider-response", vProviderResponse, data);
     },
   };
 }

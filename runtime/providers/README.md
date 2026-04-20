@@ -1,11 +1,30 @@
-# Providers (runtime)
+# Provider gateway (`runtime/providers`)
 
-This directory is reserved for **provider gateway** implementations and adapters (local GGUF, OpenAI-compatible APIs, etc.).
+Phase 3 introduces the **execution boundary** between ZAYDEN core and external model runtimes.
 
-## Phase status
+## Layout
 
-Scaffold only — no concrete adapters yet.
+- `base/` — `ProviderAdapter` interface, shared types (aliases of contract mirrors), errors
+- `registry/` — `ProviderRegistry` + `ProviderGateway` (validates ingress/egress with Ajv)
+- `adapters/` — concrete adapters (`mock`, `gemma-local` stub, future bridges)
 
-## Rule
+## Rules
 
-Model weights and third-party CLI products must not be imported as “core libraries” without an ADR and contract tests.
+- **Never** import `research/*` from adapters in this phase.
+- **Never** return vendor SDK objects from `execute()` — only `ProviderResponse` contract objects.
+- Gateway **must** call `assertValidProviderRequest` / `assertValidProviderResponse` (no bypass).
+
+## Usage sketch
+
+```ts
+import { createContractValidators } from "../contracts/index.js";
+import { MockProviderAdapter } from "./adapters/mock/mock.adapter.js";
+import { ProviderGateway, ProviderRegistry } from "./registry/provider-registry.js";
+
+const validators = createContractValidators();
+const registry = new ProviderRegistry();
+registry.register(new MockProviderAdapter("mock"));
+const gateway = new ProviderGateway(validators, registry);
+```
+
+See `docs/phases/phase-03-provider-gateway.md` and `docs/architecture/openclaude-adaptation-plan.md`.

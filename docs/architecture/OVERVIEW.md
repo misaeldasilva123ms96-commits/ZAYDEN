@@ -20,6 +20,7 @@ Runtime JSON contracts (Phase 2) are documented in `docs/architecture/runtime-co
 
 - **Phase 0/1 (Forensic intake + foundation):** repository skeleton, `research/` unpack layout, fingerprint registry, intake validator, baseline documentation.
 - **Phase 2 (Contract-first runtime):** JSON Schemas + Ajv validators + contract tests (`docs/architecture/runtime-contracts.md`).
+- **Phase 3 (Provider gateway):** `ProviderGateway` + adapters + integration tests (`docs/phases/phase-03-provider-gateway.md`, `docs/architecture/openclaude-adaptation-plan.md`).
 - **Runtime execution:** not yet implemented as a ZAYDEN-owned service; upstream OpenClaude remains an **isolated research artifact** until a later phase defines adapter boundaries.
 
 ## Traceability rule

@@ -8,6 +8,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ### Added
 
+- Phase 3 provider gateway (`ProviderRegistry`, `ProviderGateway`, mock + `gemma-local` stub adapters) + core orchestration skeleton
+- OpenClaude adaptation framing doc (`docs/architecture/openclaude-adaptation-plan.md`) + ADR-0004
 - Phase 2 JSON Schema contracts for chat/provider/tool/error/memory/inspection (`runtime/contracts/*.schema.json`)
 - Strict Ajv validation layer (`runtime/contracts/validators.ts`) + TypeScript exports (`runtime/contracts/index.ts`)
 - Contract test suite (`tests/contracts/*.test.ts`) + `npm run typecheck`
