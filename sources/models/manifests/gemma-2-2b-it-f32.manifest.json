@@ -1,0 +1,11 @@
+{
+  "asset_id": "gemma-2-2b-it-f32",
+  "kind": "local_model_gguf",
+  "packaging": "zip_single_entry",
+  "expected_zip_entry": "gemma-2-2b-it-f32.gguf",
+  "expected_archive_size_bytes": 4629837305,
+  "sha256_archive": null,
+  "integration_rule": "Must be consumed exclusively through a provider gateway adapter. No hardcoded paths in runtime core.",
+  "provenance": "User-supplied local model asset. Verify licensing/terms for your deployment context before distribution.",
+  "traceability": "docs/audits/SOURCE-gemma-2-2b-it-f32.md"
+}

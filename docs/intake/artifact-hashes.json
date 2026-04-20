@@ -1,0 +1,27 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "description": "Pinned SHA-256 fingerprints for small vendor archives at the repository root. Rotations require an explicit intake report update + ADR.",
+  "generated_at": "2026-04-20",
+  "assets": {
+    "openclaude-main.zip": {
+      "sha256": "804B3541026431D89F21BAFB82108B66CB584EA49F89C40923EFF30922D3E6FA",
+      "role": "primary_operational_base_candidate",
+      "trace": "sources/intake/openclaude-main/ (after unpack)"
+    },
+    "claw-code-main.zip": {
+      "sha256": "614A8515B512797B513CDA0F432451D06DEA000811FD9C8B50B0E6AC70FBEAA3",
+      "role": "harness_runtime_parity_inspiration",
+      "trace": "sources/intake/claw-code-main/ (after unpack)"
+    },
+    "src.zip": {
+      "sha256": "8CD0E0B61DDC5755E2120876ECE34F3B24613F1F5F0D97A659962A7282BC8921",
+      "role": "partial_source_tree_architecture_study_only",
+      "trace": "sources/study/src/ (after unpack)"
+    },
+    "system_prompts_leaks-main.zip": {
+      "sha256": "A073AB5DF942EFB8D36D2B8C1F28D6174B9F9772B79BF962181406B0FA579980",
+      "role": "research_reference_material_only",
+      "trace": "sources/reference/system-prompts-leaks/ (after unpack + flatten)"
+    }
+  }
+}

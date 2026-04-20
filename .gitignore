@@ -1,0 +1,30 @@
+# Dependencies
+node_modules/
+
+# Local secrets
+.env
+.env.*
+!.env.example
+
+# Build outputs
+dist/
+coverage/
+
+# OS / editor
+.DS_Store
+Thumbs.db
+
+# Vendor archives (keep local; reproducibility is via pinned hashes in docs/intake/artifact-hashes.json)
+/openclaude-main.zip
+/claw-code-main.zip
+/src.zip
+/system_prompts_leaks-main.zip
+
+# Large local model archive (keep out of VCS; fingerprint lives in manifests)
+/gemma-2-2b-it-f32.zip
+*.gguf
+
+# Reproducible third-party trees (unpack from vendor zips using scripts/unpack-intake.ps1)
+/sources/intake/
+/sources/study/
+/sources/reference/

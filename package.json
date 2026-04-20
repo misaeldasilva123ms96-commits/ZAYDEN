@@ -1,0 +1,15 @@
+{
+  "name": "zayden",
+  "private": true,
+  "version": "0.0.0",
+  "description": "ZAYDEN — governed multi-provider AI runtime integration program",
+  "type": "module",
+  "engines": {
+    "node": ">=18.18.0"
+  },
+  "scripts": {
+    "intake:validate": "node scripts/validate-source-intake.mjs",
+    "test": "node --test",
+    "gate:intake": "npm run intake:validate && npm test"
+  }
+}
