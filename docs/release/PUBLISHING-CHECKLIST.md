@@ -5,6 +5,8 @@
 - [ ] `npm run typecheck`
 - [ ] `npm run test`
 - [ ] `npm run gate:f0-f10`
+- [ ] baseline intake gate uses repository mode (`npm run intake:validate` -> `--mode=repo`)
+- [ ] optional local forensic intake validation (archives + unpacked trees): `npm run intake:validate:forensic`
 - [ ] working tree clean (`git status --short`)
 
 ## Repository hygiene
