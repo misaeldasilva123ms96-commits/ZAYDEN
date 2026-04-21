@@ -33,8 +33,11 @@ test("bootstrap creates API server when enabled", async () => {
   const boot = await bootstrapRuntimeHost({
     config: baseConfig({ enable_api: true }),
   });
-  assert.ok(boot.server);
-  await boot.stop();
+  try {
+    assert.ok(boot.server);
+  } finally {
+    await boot.stop();
+  }
 });
 
 test("persistent memory store is enabled only when configured", () => {

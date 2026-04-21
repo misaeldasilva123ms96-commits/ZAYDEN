@@ -215,11 +215,11 @@ export class RuntimeOrchestrator {
           },
         });
 
+        mergeResilienceAggregate(resilienceAgg, outcome.telemetry);
         if (!outcome.ok) {
           throw outcome.error;
         }
 
-        mergeResilienceAggregate(resilienceAgg, outcome.telemetry);
         const response = outcome.response;
         const fallbackTriggered = i > 0;
         if (fallbackTriggered) {

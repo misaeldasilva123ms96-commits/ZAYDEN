@@ -14,12 +14,29 @@ import { fileURLToPath } from "node:url";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 const REPO_ROOT = join(__dirname, "..");
+const VALID_MODES = new Set(["repo", "forensic"]);
+
+function parseMode(argv) {
+  const modeArg = argv.find((arg) => arg.startsWith("--mode="));
+  const mode = modeArg ? modeArg.slice("--mode=".length).trim().toLowerCase() : "repo";
+  if (!VALID_MODES.has(mode)) {
+    console.error(
+      `[zayden:intake] FAIL: invalid mode "${mode}". expected one of: ${[...VALID_MODES].join(", ")}`,
+    );
+    process.exit(1);
+  }
+  return mode;
+}
 
 function must(cond, msg) {
   if (!cond) {
     console.error(`[zayden:intake] FAIL: ${msg}`);
     process.exit(1);
   }
+}
+
+function warn(msg) {
+  console.warn(`[zayden:intake] WARN: ${msg}`);
 }
 
 function readJson(path) {
@@ -32,6 +49,9 @@ function sha256File(path) {
 }
 
 function main() {
+  const mode = parseMode(process.argv.slice(2));
+  const forensicMode = mode === "forensic";
+
   const requiredDirs = [
     join(REPO_ROOT, "apps", "cli"),
     join(REPO_ROOT, "apps", "api"),
@@ -300,6 +320,17 @@ function main() {
   const hashesPath = join(REPO_ROOT, "docs", "intake", "artifact-hashes.json");
   must(existsSync(hashesPath), `Missing fingerprint registry: ${hashesPath}`);
   const registry = readJson(hashesPath);
+  for (const rel of [
+    "openclaude-main.zip",
+    "claw-code-main.zip",
+    "src.zip",
+    "system_prompts_leaks-main.zip",
+  ]) {
+    must(
+      typeof registry.assets?.[rel]?.sha256 === "string" && registry.assets[rel].sha256.length === 64,
+      `Fingerprint registry missing pinned sha256 for ${rel}`,
+    );
+  }
 
   const smallZips = [
     { rel: "openclaude-main.zip", expectedSha256: registry.assets["openclaude-main.zip"].sha256 },
@@ -308,14 +339,25 @@ function main() {
     { rel: "system_prompts_leaks-main.zip", expectedSha256: registry.assets["system_prompts_leaks-main.zip"].sha256 },
   ];
 
-  for (const z of smallZips) {
-    const p = join(REPO_ROOT, z.rel);
-    must(existsSync(p), `Missing archive at repo root: ${z.rel}`);
-    const actual = sha256File(p);
-    must(
-      actual === z.expectedSha256,
-      `SHA256 mismatch for ${z.rel}. expected=${z.expectedSha256} actual=${actual}`,
-    );
+  if (forensicMode) {
+    for (const z of smallZips) {
+      const p = join(REPO_ROOT, z.rel);
+      must(existsSync(p), `Missing archive at repo root: ${z.rel}`);
+      const actual = sha256File(p);
+      must(
+        actual === z.expectedSha256,
+        `SHA256 mismatch for ${z.rel}. expected=${z.expectedSha256} actual=${actual}`,
+      );
+    }
+  } else {
+    for (const z of smallZips) {
+      const p = join(REPO_ROOT, z.rel);
+      if (!existsSync(p)) {
+        warn(
+          `repo mode: local forensic archive absent at repo root (${z.rel}); fingerprint remains pinned in docs/intake/artifact-hashes.json`,
+        );
+      }
+    }
   }
 
   const intake = join(REPO_ROOT, "research", "source-openclaude", "package.json");
@@ -324,11 +366,16 @@ function main() {
   const refAnthropic = join(REPO_ROOT, "research", "source-prompts-reference", "Anthropic");
 
   const missing = [intake, clawReadme, studyMain, refAnthropic].filter((p) => !existsSync(p));
-  if (missing.length) {
+  if (missing.length && forensicMode) {
     console.error("[zayden:intake] FAIL: unpacked research trees are missing.");
     for (const m of missing) console.error(`  - missing: ${m}`);
     console.error('[zayden:intake] Fix: run PowerShell: .\\scripts\\unpack-intake.ps1');
     process.exit(1);
+  }
+  if (missing.length && !forensicMode) {
+    warn(
+      "repo mode: unpacked research trees are absent. This is expected in published baseline validation; use --mode=forensic for local archive/unpack verification.",
+    );
   }
 
   const gemmaZip = join(REPO_ROOT, "gemma-2-2b-it-f32.zip");
@@ -372,7 +419,9 @@ function main() {
     }
   }
 
-  console.log("[zayden:intake] PASS: Phase 0/1 filesystem + fingerprint gates satisfied.");
+  console.log(
+    `[zayden:intake] PASS: Phase 0/1 filesystem + fingerprint gates satisfied (mode=${mode}).`,
+  );
 }
 
 main();

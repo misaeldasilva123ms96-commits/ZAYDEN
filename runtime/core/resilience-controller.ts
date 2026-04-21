@@ -1,8 +1,12 @@
 import type { ProviderResponse } from "../contracts/index.js";
 import { ChaosInjector } from "../providers/harness/chaos-injector.js";
-import { classifyFailure, type FailureClass } from "../providers/resilience/failure-classifier.js";
+import {
+  ChaosInducedError,
+  classifyFailure,
+  type FailureClass,
+} from "../providers/resilience/failure-classifier.js";
 import { computeRetryDecision, type RetryPolicy } from "../providers/resilience/retry-policy.js";
-import { withTimeout, ZaydenTimeoutError } from "../providers/resilience/timeout-controller.js";
+import { withTimeout } from "../providers/resilience/timeout-controller.js";
 import type { ResilienceTelemetry } from "../providers/routing/routing-types.js";
 
 export interface ResilienceExecuteParams {
@@ -45,10 +49,11 @@ export class ResilienceController {
 
     for (;;) {
       telemetry.execution_attempts += 1;
-      const chaosTouched = await chaos.preExecute(params.adapterId, attemptIndex);
-      if (chaosTouched) telemetry.chaos_applied = true;
 
       try {
+        const chaosTouched = await chaos.preExecute(params.adapterId, attemptIndex);
+        if (chaosTouched) telemetry.chaos_applied = true;
+
         const response = await withTimeout(
           () => params.execute(),
           params.per_attempt_timeout_ms,
@@ -57,10 +62,13 @@ export class ResilienceController {
         telemetry.failure_type = null;
         return { ok: true, response, telemetry };
       } catch (error) {
-        if (error instanceof ZaydenTimeoutError) {
+        const classified = classifyFailure(error);
+        if (error instanceof ChaosInducedError) {
+          telemetry.chaos_applied = true;
+        }
+        if (classified.class === "TIMEOUT") {
           telemetry.timeout_triggered = true;
         }
-        const classified = classifyFailure(error);
         telemetry.failure_type = classified.class as FailureClass;
         params.onObserve?.(
           `RESILIENCE:attempt=${attemptIndex}:failure=${classified.class}:retry_allowed=${classified.retry_allowed}`,

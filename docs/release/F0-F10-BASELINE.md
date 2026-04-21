@@ -46,6 +46,11 @@ npm run test
 npm run gate:f0-f10
 ```
 
+Intake validation policy:
+
+- `npm run intake:validate` runs repository baseline mode (`--mode=repo`) and does not require local forensic zip archives at repo root.
+- `npm run intake:validate:forensic` is the strict local mode for archive presence/SHA checks and unpacked research trees.
+
 ## Known limitations
 
 - no auth/rate-limiting guardrails at transport edge yet

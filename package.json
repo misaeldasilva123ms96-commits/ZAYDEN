@@ -8,7 +8,8 @@
     "node": ">=18.18.0"
   },
   "scripts": {
-    "intake:validate": "node scripts/validate-source-intake.mjs",
+    "intake:validate": "node scripts/validate-source-intake.mjs --mode=repo",
+    "intake:validate:forensic": "node scripts/validate-source-intake.mjs --mode=forensic",
     "intake:migrate": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/migrate-sources-to-research.ps1",
     "test": "npm run test:unit && npm run test:contracts && npm run test:tools && npm run test:memory && npm run test:resilience && npm run test:harness && npm run test:integration && npm run test:api && npm run test:host && npm run test:regression",
     "test:unit": "node --test tests/unit/intake-registry.test.mjs && tsx --test tests/unit/routing-policy.test.ts tests/unit/fallback-policy.test.ts tests/unit/api-observability.test.ts",

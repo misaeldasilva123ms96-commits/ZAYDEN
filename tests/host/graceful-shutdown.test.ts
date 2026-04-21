@@ -84,4 +84,5 @@ test("repeated shutdown signal is handled safely", async () => {
   await hooks.trigger("SIGINT");
   assert.equal(closeCalled, 1);
   assert.equal(exitCalls, 1);
+  hooks.dispose();
 });
