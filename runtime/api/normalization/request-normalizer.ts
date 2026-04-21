@@ -1,4 +1,4 @@
-import type { RoutingMode } from "../../contracts/index.js";
+import type { RequestedMode } from "../../contracts/index.js";
 import type { MemoryPolicy } from "../../memory/base/memory.types.js";
 import { resolveMemoryPolicy } from "../../memory/policy/memory-policy.js";
 import type { RoutingPolicy } from "../../providers/routing/routing-types.js";
@@ -8,7 +8,7 @@ import { getPublicApiValidators } from "./public-validators.js";
 export interface NormalizedChatInput {
   readonly session_id: string;
   readonly input: string;
-  readonly mode: RoutingMode;
+  readonly mode: RequestedMode;
   readonly provider: string | null;
   /** Merged into `RuntimeOrchestrator.route({ policy })` (partial only). */
   readonly routing_policy_override: Partial<RoutingPolicy>;
@@ -53,7 +53,7 @@ export function parseAndNormalizeChatRequest(body: unknown): NormalizedChatInput
   return {
     session_id: String(o.session_id),
     input: String(o.input),
-    mode: o.mode as RoutingMode,
+    mode: o.mode as RequestedMode,
     provider: o.provider === null || o.provider === undefined ? null : String(o.provider),
     routing_policy_override,
     tool_policy,

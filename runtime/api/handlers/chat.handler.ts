@@ -21,7 +21,10 @@ export async function handleChat(
   try {
     bodyText = await readBody(req);
   } catch {
-    const m = mapPublicRequestInvalid(ctx.request_id, "payload too large");
+    const m = mapPublicRequestInvalid({
+      request_id: ctx.request_id,
+      message: "payload too large",
+    });
     assertPublicErrorPayload(m.body);
     res.statusCode = m.status;
     res.setHeader("content-type", "application/json; charset=utf-8");
@@ -34,7 +37,10 @@ export async function handleChat(
   try {
     json = bodyText.length === 0 ? null : JSON.parse(bodyText);
   } catch {
-    const m = mapPublicRequestInvalid(ctx.request_id, "invalid JSON body");
+    const m = mapPublicRequestInvalid({
+      request_id: ctx.request_id,
+      message: "invalid JSON body",
+    });
     assertPublicErrorPayload(m.body);
     res.statusCode = m.status;
     res.setHeader("content-type", "application/json; charset=utf-8");
@@ -66,7 +72,10 @@ export async function handleChat(
     });
   } catch (e) {
     if (isPublicRequestInvalid(e)) {
-      const m = mapPublicRequestInvalid(ctx.request_id, e.message);
+      const m = mapPublicRequestInvalid({
+        request_id: ctx.request_id,
+        message: e.message,
+      });
       assertPublicErrorPayload(m.body);
       res.statusCode = m.status;
       res.setHeader("content-type", "application/json; charset=utf-8");

@@ -1,4 +1,8 @@
-import type { ProviderRequest, ProviderResponse } from "../../contracts/index.js";
+import type {
+  ContractValidators,
+  ProviderRequest,
+  ProviderResponse,
+} from "../../contracts/index.js";
 import { createContractValidators } from "../../contracts/index.js";
 import { ProviderExecutionError } from "../base/provider.errors.js";
 import type { ProviderAdapter } from "../base/provider.interface.js";
@@ -73,7 +77,7 @@ export interface HarnessRunResult {
  * Standardized provider scenarios for contract parity checks (deterministic, no network).
  */
 export class ProviderHarness {
-  private readonly validators = createContractValidators();
+  private readonly validators: ContractValidators = createContractValidators();
 
   getScenario(id: HarnessScenarioId): HarnessScenario {
     return PROVIDER_SCENARIOS[id];
