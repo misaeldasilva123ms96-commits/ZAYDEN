@@ -42,12 +42,14 @@ function main() {
     join(REPO_ROOT, "runtime", "tools"),
     join(REPO_ROOT, "runtime", "memory"),
     join(REPO_ROOT, "runtime", "api"),
+    join(REPO_ROOT, "runtime", "host"),
     join(REPO_ROOT, "runtime", "observability"),
     join(REPO_ROOT, "research"),
     join(REPO_ROOT, "research", "source-models", "manifests"),
     join(REPO_ROOT, "tests", "unit"),
     join(REPO_ROOT, "tests", "integration"),
     join(REPO_ROOT, "tests", "api"),
+    join(REPO_ROOT, "tests", "host"),
     join(REPO_ROOT, "tests", "contracts"),
     join(REPO_ROOT, "tests", "regression"),
     join(REPO_ROOT, "tests", "fixtures"),
@@ -259,6 +261,27 @@ function main() {
   ];
   for (const p of phase9ApiSurface) {
     must(existsSync(p), `Missing Phase 9 runtime API artifact: ${p}`);
+  }
+
+  const phase10ServiceHost = [
+    join(REPO_ROOT, "runtime", "host", "config", "env-schema.ts"),
+    join(REPO_ROOT, "runtime", "host", "config", "config-loader.ts"),
+    join(REPO_ROOT, "runtime", "host", "config", "config-normalizer.ts"),
+    join(REPO_ROOT, "runtime", "host", "bootstrap", "dependency-container.ts"),
+    join(REPO_ROOT, "runtime", "host", "bootstrap", "runtime-bootstrap.ts"),
+    join(REPO_ROOT, "runtime", "host", "bootstrap", "graceful-shutdown.ts"),
+    join(REPO_ROOT, "runtime", "host", "entrypoints", "serve.ts"),
+    join(REPO_ROOT, "tests", "host", "config-loader.test.ts"),
+    join(REPO_ROOT, "tests", "host", "runtime-bootstrap.test.ts"),
+    join(REPO_ROOT, "tests", "host", "graceful-shutdown.test.ts"),
+    join(REPO_ROOT, "tests", "integration", "service-host.test.ts"),
+    join(REPO_ROOT, "docs", "architecture", "host-runtime-model.md"),
+    join(REPO_ROOT, "docs", "runbooks", "service-operations.md"),
+    join(REPO_ROOT, "docs", "phases", "phase-10-service-host-entrypoint.md"),
+    join(REPO_ROOT, "docs", "decisions", "ADR-0011-service-host-boundary.md"),
+  ];
+  for (const p of phase10ServiceHost) {
+    must(existsSync(p), `Missing Phase 10 service host artifact: ${p}`);
   }
 
   const hashesPath = join(REPO_ROOT, "docs", "intake", "artifact-hashes.json");

@@ -8,6 +8,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ### Added
 
+- Phase 10 service host boot layer (`runtime/host/*`): validated env config, explicit dependency container, operational bootstrap, `serve` entrypoint, and graceful shutdown hooks (`SIGINT`/`SIGTERM`) with host-level tests and service-host integration (`npm run test:host`, `npm run serve`, `npm run gate:phase10`, ADR-0011, `docs/architecture/host-runtime-model.md`, `docs/runbooks/service-operations.md`)
 - Phase 9 external HTTP API surface (`runtime/api/*`, `RuntimeService` in `runtime/core/runtime-service.ts`): public JSON Schemas, thin transport, `POST /api/chat`, `GET /api/health`, `GET /api/readiness`, normalized errors, API access logs (`npm run test:api`, `npm run gate:phase9`, ADR-0010, `docs/architecture/runtime-api-surface.md`, `docs/architecture/observability.md`, `docs/runbooks/api-operations.md`, `docs/runbooks/troubleshooting.md`)
 - Phase 8 session + memory framework (`runtime/memory/*`, `MemoryOrchestrator`), policy-gated loading, context budget, in-memory and file persistence adapters, and tests (`npm run test:memory`, ADR-0009, `docs/architecture/memory-model.md`)
 - Phase 7 tool layer (`runtime/tools/*`, `ToolOrchestrator`), explicit registry/policy/validator/executor split, builtins (`echo`, `clock`, `fail`), and tests (`npm run test:tools`, ADR-0008, `docs/architecture/tooling-model.md`)

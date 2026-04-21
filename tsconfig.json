@@ -17,6 +17,7 @@
     "runtime/contracts/**/*.ts",
     "runtime/core/**/*.ts",
     "runtime/api/**/*.ts",
+    "runtime/host/**/*.ts",
     "runtime/providers/**/*.ts",
     "runtime/tools/**/*.ts",
     "runtime/memory/**/*.ts",
@@ -26,6 +27,7 @@
     "tests/contracts/**/*.ts",
     "tests/integration/**/*.ts",
     "tests/api/**/*.ts",
+    "tests/host/**/*.ts",
     "tests/resilience/**/*.ts",
     "tests/harness/**/*.ts"
   ]

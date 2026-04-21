@@ -12,7 +12,7 @@ This file is the **entrypoint** for architecture navigation.
 ## Repository layout (Phase 1 foundation)
 
 - **Applications (future):** `apps/cli`, `apps/api`, `apps/ui`
-- **ZAYDEN-owned runtime:** `runtime/{core,contracts,providers,tools,memory,observability}`
+- **ZAYDEN-owned runtime:** `runtime/{core,contracts,providers,tools,memory,api,host,observability}`
 - **Upstream/reference material (unpacked, gitignored):** `research/source-*`
 - **Tests:** `tests/{unit,integration,contracts,regression,fixtures,mocks}`
 

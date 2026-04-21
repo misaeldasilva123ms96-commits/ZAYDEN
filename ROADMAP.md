@@ -14,10 +14,11 @@ This roadmap is intentionally conservative: it describes **engineering phases**,
 - **Phase 7 — Tooling policy:** tool registry, permission model, invocation validation, timeout-wrapped executor, normalized errors, observability (`docs/phases/phase-07-tooling-policy.md`).
 - **Phase 8 — Session + memory:** ephemeral session store/manager, optional persistence adapters, bounded memory assembly via `MemoryOrchestrator` (`docs/phases/phase-08-memory-session-framework.md`).
 - **Phase 9 — Runtime API surface:** thin HTTP boundary, public schemas, `RuntimeService` entrypoint, health/readiness, normalized errors (`docs/phases/phase-09-runtime-api-surface.md`).
+- **Phase 10 — Service host entrypoint:** validated host config, explicit dependency container, process bootstrap, and graceful shutdown (`docs/phases/phase-10-service-host-entrypoint.md`).
 
 ## Next
 
-- **Phase 10 — TBD:** extend external operability (host binary, auth boundary, or streaming profile) behind new ADRs without relaxing transport/runtime separation.
+- **Phase 11 — TBD:** production hardening at boundaries (auth/rate-limit stubs, deployment profile matrix, streaming profile ADRs) without relaxing transport/runtime separation.
 
 ## Explicit non-goals (near term)
 

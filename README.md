@@ -4,7 +4,7 @@ ZAYDEN is a **governed, architecture-first** program for integrating a multi-pro
 
 This repository is intentionally staged behind **gates** (deterministic checks, documentation, provenance).
 
-## Quickstart (Phase 0/1)
+## Quickstart
 
 1. Place the vendor archives at the repository root (they are **not committed** to git; integrity is pinned in `docs/intake/artifact-hashes.json`):
 
@@ -55,6 +55,19 @@ npm run gate:phase4
 npm run gate:phase5
 ```
 
+8. External API + host operability gates (Phase 9/10):
+
+```powershell
+npm run gate:phase9
+npm run gate:phase10
+```
+
+9. Run the service entrypoint (Phase 10):
+
+```powershell
+npm run serve
+```
+
 ## What lives where
 
 - **ZAYDEN-owned scaffolding:** `apps/`, `runtime/`, `tests/`, `docs/`, `scripts/`, `package.json`
@@ -77,4 +90,4 @@ See `docs/PROVENANCE.md` and the Phase 0 forensic audits under `docs/audits/`.
 
 ## Status
 
-Phase 0/1 establishes **forensic intake + foundation scaffolding + gates**. **This is not a claim of production readiness** for an end-to-end runtime.
+Phase 10 delivers an operational service host entrypoint over a governed runtime API surface with explicit boot wiring and graceful shutdown. **This is still not a claim of full production readiness**.
