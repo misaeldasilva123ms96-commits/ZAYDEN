@@ -28,6 +28,7 @@
     "tests/integration/**/*.ts",
     "tests/api/**/*.ts",
     "tests/host/**/*.ts",
+    "tests/regression/**/*.ts",
     "tests/resilience/**/*.ts",
     "tests/harness/**/*.ts"
   ]

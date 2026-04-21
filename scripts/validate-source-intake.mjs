@@ -60,6 +60,7 @@ function main() {
     join(REPO_ROOT, "docs", "intake"),
     join(REPO_ROOT, "docs", "phases"),
     join(REPO_ROOT, "docs", "runbooks"),
+    join(REPO_ROOT, "docs", "release"),
     join(REPO_ROOT, "docs", "providers"),
     join(REPO_ROOT, "docs", "testing"),
     join(REPO_ROOT, ".github", "workflows"),
@@ -282,6 +283,18 @@ function main() {
   ];
   for (const p of phase10ServiceHost) {
     must(existsSync(p), `Missing Phase 10 service host artifact: ${p}`);
+  }
+
+  const releaseBaseline = [
+    join(REPO_ROOT, "docs", "release", "f0-f10-audit-report.md"),
+    join(REPO_ROOT, "docs", "release", "F0-F10-BASELINE.md"),
+    join(REPO_ROOT, "docs", "release", "PUBLISHING-CHECKLIST.md"),
+    join(REPO_ROOT, "docs", "release", "F0-F10-PUBLISH-REPORT.md"),
+    join(REPO_ROOT, "tests", "regression", "provider-malformed-response.test.ts"),
+    join(REPO_ROOT, "tests", "regression", "host-config-regression.test.ts"),
+  ];
+  for (const p of releaseBaseline) {
+    must(existsSync(p), `Missing F0-F10 release-hardening artifact: ${p}`);
   }
 
   const hashesPath = join(REPO_ROOT, "docs", "intake", "artifact-hashes.json");

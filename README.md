@@ -81,6 +81,7 @@ npm run serve
 - **Roadmap:** `ROADMAP.md`
 - **Phases:** `docs/phases/`
 - **Runbooks:** `docs/runbooks/`
+- **Release artifacts:** `docs/release/`
 - **Audits:** `docs/audits/`
 - **ADRs:** `docs/decisions/`
 
