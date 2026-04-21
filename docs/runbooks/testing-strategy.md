@@ -9,8 +9,9 @@ ZAYDEN uses layered tests inspired by disciplined harness practice: deterministi
 | Unit | `npm run test:unit` | Pure policy/selection helpers, intake registry |
 | Contracts | `npm run test:contracts` | Ajv validation against pinned JSON Schemas |
 | Resilience | `npm run test:resilience` | Timeouts, retries, chaos routing, failure classification edges |
+| Tools | `npm run test:tools` | Tool registry, policy, orchestrator execution, error normalization |
 | Harness | `npm run test:harness` | Provider scenario matrix without network |
-| Integration | `npm run test:integration` | Registry + gateway + orchestrator wiring |
+| Integration | `npm run test:integration` | Registry + gateway + orchestrator wiring + tool orchestrator |
 
 ## Determinism and flake control
 
@@ -21,6 +22,8 @@ ZAYDEN uses layered tests inspired by disciplined harness practice: deterministi
 ## Gate
 
 `npm run gate:phase6` runs typecheck, unit, resilience, harness, integration, contracts, and `intake:validate` for a merge-ready signal.
+
+`npm run gate:phase7` adds the tools suite on top of the Phase 6 gate.
 
 ## Future parity-style tests
 

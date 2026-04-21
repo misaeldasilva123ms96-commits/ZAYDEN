@@ -11,10 +11,10 @@ This roadmap is intentionally conservative: it describes **engineering phases**,
 - **Phase 4 — Local provider bridges:** HTTP/CLI bridge adapters with simulated degraded mode and integration tests.
 - **Phase 5 — Routing policy:** deterministic adapter selection/fallback orchestration with observable provider chains.
 - **Phase 6 — Resilience + harness:** failure classification, bounded retries/timeouts, deterministic chaos, provider scenario harness, environment policy profiles (`docs/phases/phase-06-resilience-harness.md`).
+- **Phase 7 — Tooling policy:** tool registry, permission model, invocation validation, timeout-wrapped executor, normalized errors, observability (`docs/phases/phase-07-tooling-policy.md`).
 
 ## Next
 
-- **Phase 7 — Tooling policy:** tool registry, permissions, deterministic tool-call tests.
 - **Phase 8 — Runtime API surface:** explicit service entrypoints for external clients.
 
 ## Explicit non-goals (near term)

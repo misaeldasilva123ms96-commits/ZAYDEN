@@ -166,6 +166,35 @@ function main() {
     must(existsSync(p), `Missing Phase 6 resilience artifact: ${p}`);
   }
 
+  const phase7Tools = [
+    join(REPO_ROOT, "runtime", "tools", "base", "tool.interface.ts"),
+    join(REPO_ROOT, "runtime", "tools", "base", "tool.types.ts"),
+    join(REPO_ROOT, "runtime", "tools", "base", "tool.errors.ts"),
+    join(REPO_ROOT, "runtime", "tools", "registry", "tool-registry.ts"),
+    join(REPO_ROOT, "runtime", "tools", "policy", "tool-policy.ts"),
+    join(REPO_ROOT, "runtime", "tools", "policy", "permission-resolver.ts"),
+    join(REPO_ROOT, "runtime", "tools", "policy", "tool-invocation-validator.ts"),
+    join(REPO_ROOT, "runtime", "tools", "execution", "tool-executor.ts"),
+    join(REPO_ROOT, "runtime", "tools", "execution", "tool-result-normalizer.ts"),
+    join(REPO_ROOT, "runtime", "tools", "builtins", "echo.tool.ts"),
+    join(REPO_ROOT, "runtime", "tools", "builtins", "clock.tool.ts"),
+    join(REPO_ROOT, "runtime", "tools", "builtins", "fail.tool.ts"),
+    join(REPO_ROOT, "runtime", "tools", "builtins", "register-builtins.ts"),
+    join(REPO_ROOT, "runtime", "core", "tool-orchestrator.ts"),
+    join(REPO_ROOT, "tests", "tools", "tool-registry.test.ts"),
+    join(REPO_ROOT, "tests", "tools", "tool-policy.test.ts"),
+    join(REPO_ROOT, "tests", "tools", "tool-execution.test.ts"),
+    join(REPO_ROOT, "tests", "tools", "tool-errors.test.ts"),
+    join(REPO_ROOT, "tests", "integration", "tool-orchestrator.test.ts"),
+    join(REPO_ROOT, "docs", "architecture", "tooling-model.md"),
+    join(REPO_ROOT, "docs", "runbooks", "tool-execution.md"),
+    join(REPO_ROOT, "docs", "phases", "phase-07-tooling-policy.md"),
+    join(REPO_ROOT, "docs", "decisions", "ADR-0008-tool-execution-boundary.md"),
+  ];
+  for (const p of phase7Tools) {
+    must(existsSync(p), `Missing Phase 7 tooling artifact: ${p}`);
+  }
+
   const hashesPath = join(REPO_ROOT, "docs", "intake", "artifact-hashes.json");
   must(existsSync(hashesPath), `Missing fingerprint registry: ${hashesPath}`);
   const registry = readJson(hashesPath);
