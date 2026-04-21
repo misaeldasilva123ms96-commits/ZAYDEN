@@ -5,8 +5,12 @@ import type {
   ProviderResponse,
   RequestedMode,
 } from "../../contracts/index.js";
+import type { FailureClass } from "../resilience/failure-classifier.js";
+import type { RetryPolicy } from "../resilience/retry-policy.js";
 
 export type RoutingMode = RequestedMode;
+
+export type EnvironmentProfile = "development" | "testing" | "production";
 
 export type RoutingErrorCode =
   | "ROUTING_POLICY_VIOLATION"
@@ -52,10 +56,31 @@ export interface RoutingPolicy {
     per_attempt_ms?: number;
     total_ms?: number;
   };
+  retry_policy?: RetryPolicy;
   simulation_policy?: {
     allow_simulated_local_fallback?: boolean;
   };
   hybrid_preference?: "local_first" | "cloud_first";
+}
+
+/** Serializable chaos plan (tests / harness). Disabled unless `enabled: true`. */
+export interface ChaosPlan {
+  enabled: boolean;
+  schedule?: Readonly<
+    Record<string, { latency_ms?: number; force_failure?: FailureClass }>
+  >;
+}
+
+/**
+ * Resilience metrics are kept outside `RuntimeInspectionView` because runtime-inspection.schema.json
+ * forbids additional properties; mirror key lines into `warnings` / `execution_path` for Ajv payloads.
+ */
+export interface ResilienceTelemetry {
+  retry_count: number;
+  timeout_triggered: boolean;
+  failure_type: FailureClass | null;
+  chaos_applied: boolean;
+  execution_attempts: number;
 }
 
 export interface RoutingRequestInput {
@@ -63,6 +88,10 @@ export interface RoutingRequestInput {
   requested_mode: RoutingMode;
   requested_provider?: string | null;
   policy?: Partial<RoutingPolicy>;
+  environment_profile?: EnvironmentProfile;
+  simulation?: {
+    chaos?: ChaosPlan;
+  };
 }
 
 export interface RoutingResult {
@@ -73,4 +102,5 @@ export interface RoutingResult {
   provider_actual: ProviderActual | null;
   fallback_reason: { did_fallback: boolean; code?: string | null; detail?: string | null } | null;
   observability: RuntimeInspectionView;
+  resilience?: ResilienceTelemetry;
 }

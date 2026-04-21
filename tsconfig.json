@@ -19,6 +19,8 @@
     "runtime/providers/**/*.ts",
     "tests/unit/**/*.ts",
     "tests/contracts/**/*.ts",
-    "tests/integration/**/*.ts"
+    "tests/integration/**/*.ts",
+    "tests/resilience/**/*.ts",
+    "tests/harness/**/*.ts"
   ]
 }

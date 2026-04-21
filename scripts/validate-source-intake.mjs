@@ -143,6 +143,29 @@ function main() {
     must(existsSync(p), `Missing Phase 5 routing artifact: ${p}`);
   }
 
+  const phase6Resilience = [
+    join(REPO_ROOT, "runtime", "providers", "resilience", "failure-classifier.ts"),
+    join(REPO_ROOT, "runtime", "providers", "resilience", "retry-policy.ts"),
+    join(REPO_ROOT, "runtime", "providers", "resilience", "timeout-controller.ts"),
+    join(REPO_ROOT, "runtime", "providers", "harness", "provider-harness.ts"),
+    join(REPO_ROOT, "runtime", "providers", "harness", "provider-scenarios.ts"),
+    join(REPO_ROOT, "runtime", "providers", "harness", "chaos-injector.ts"),
+    join(REPO_ROOT, "runtime", "core", "resilience-controller.ts"),
+    join(REPO_ROOT, "runtime", "providers", "routing", "policy-profiles.ts"),
+    join(REPO_ROOT, "tests", "resilience", "chaos-routing.test.ts"),
+    join(REPO_ROOT, "tests", "resilience", "timeout.test.ts"),
+    join(REPO_ROOT, "tests", "resilience", "retry-policy.test.ts"),
+    join(REPO_ROOT, "tests", "harness", "provider-compatibility.test.ts"),
+    join(REPO_ROOT, "docs", "architecture", "resilience-model.md"),
+    join(REPO_ROOT, "docs", "runbooks", "chaos-testing.md"),
+    join(REPO_ROOT, "docs", "runbooks", "testing-strategy.md"),
+    join(REPO_ROOT, "docs", "phases", "phase-06-resilience-harness.md"),
+    join(REPO_ROOT, "docs", "decisions", "ADR-0007-runtime-resilience-and-chaos-policy.md"),
+  ];
+  for (const p of phase6Resilience) {
+    must(existsSync(p), `Missing Phase 6 resilience artifact: ${p}`);
+  }
+
   const hashesPath = join(REPO_ROOT, "docs", "intake", "artifact-hashes.json");
   must(existsSync(hashesPath), `Missing fingerprint registry: ${hashesPath}`);
   const registry = readJson(hashesPath);

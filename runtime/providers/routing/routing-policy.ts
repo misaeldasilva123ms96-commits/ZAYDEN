@@ -1,3 +1,4 @@
+import { DEFAULT_RETRY_POLICY, mergeRetryPolicy } from "../resilience/retry-policy.js";
 import type { RoutingPolicy } from "./routing-types.js";
 
 export const DEFAULT_ROUTING_POLICY: RoutingPolicy = {
@@ -12,6 +13,7 @@ export const DEFAULT_ROUTING_POLICY: RoutingPolicy = {
     per_attempt_ms: 30_000,
     total_ms: 90_000,
   },
+  retry_policy: DEFAULT_RETRY_POLICY,
   simulation_policy: {
     allow_simulated_local_fallback: true,
   },
@@ -28,6 +30,13 @@ export function resolveRoutingPolicy(
       ...DEFAULT_ROUTING_POLICY.timeout_policy,
       ...(override?.timeout_policy ?? {}),
     },
+    retry_policy: mergeRetryPolicy(
+      DEFAULT_RETRY_POLICY,
+      {
+        ...DEFAULT_ROUTING_POLICY.retry_policy,
+        ...(override?.retry_policy ?? {}),
+      },
+    ),
     simulation_policy: {
       ...DEFAULT_ROUTING_POLICY.simulation_policy,
       ...(override?.simulation_policy ?? {}),

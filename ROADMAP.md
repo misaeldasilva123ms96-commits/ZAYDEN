@@ -10,10 +10,10 @@ This roadmap is intentionally conservative: it describes **engineering phases**,
 - **Phase 3 — Provider gateway:** registry + validated gateway + mock + `gemma-local` compatibility adapter + orchestration skeleton.
 - **Phase 4 — Local provider bridges:** HTTP/CLI bridge adapters with simulated degraded mode and integration tests.
 - **Phase 5 — Routing policy:** deterministic adapter selection/fallback orchestration with observable provider chains.
+- **Phase 6 — Resilience + harness:** failure classification, bounded retries/timeouts, deterministic chaos, provider scenario harness, environment policy profiles (`docs/phases/phase-06-resilience-harness.md`).
 
 ## Next
 
-- **Phase 6 — Compatibility harness:** optional automated smoke against pinned upstream snapshots (non-vendored core).
 - **Phase 7 — Tooling policy:** tool registry, permissions, deterministic tool-call tests.
 - **Phase 8 — Runtime API surface:** explicit service entrypoints for external clients.
 

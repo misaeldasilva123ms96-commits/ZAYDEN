@@ -6,6 +6,7 @@ export function shouldAttemptFallback(params: {
   attemptIndex: number;
   hasAnotherCandidate: boolean;
   lastFailureRecoverable: boolean;
+  lastFailureFallbackAllowed: boolean;
 }): boolean {
   const {
     mode,
@@ -13,21 +14,22 @@ export function shouldAttemptFallback(params: {
     attemptIndex,
     hasAnotherCandidate,
     lastFailureRecoverable,
+    lastFailureFallbackAllowed,
   } = params;
 
   if (!hasAnotherCandidate || attemptIndex < 0) return false;
   if (!policy.allow_fallback) return false;
-  if (!lastFailureRecoverable) return false;
+  if (!lastFailureFallbackAllowed) return false;
 
   switch (mode) {
     case "LOCAL_ONLY":
-      return !policy.strict_local_only;
+      return !policy.strict_local_only && lastFailureRecoverable;
     case "CLOUD_ONLY":
-      return !policy.strict_cloud_only;
+      return !policy.strict_cloud_only && lastFailureRecoverable;
     case "HYBRID":
       return true;
     case "SAFE_FALLBACK":
-      return true;
+      return lastFailureRecoverable;
     default:
       return false;
   }

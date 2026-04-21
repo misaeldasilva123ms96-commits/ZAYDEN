@@ -12,11 +12,12 @@ test("LOCAL_ONLY strict mode does not fallback", () => {
     attemptIndex: 0,
     hasAnotherCandidate: true,
     lastFailureRecoverable: true,
+    lastFailureFallbackAllowed: true,
   });
   assert.equal(allowed, false);
 });
 
-test("HYBRID allows fallback when recoverable and fallback enabled", () => {
+test("HYBRID allows fallback when fallback is allowed for the failure class", () => {
   const policy = resolveRoutingPolicy({ allow_fallback: true });
   const allowed = shouldAttemptFallback({
     mode: "HYBRID",
@@ -24,11 +25,38 @@ test("HYBRID allows fallback when recoverable and fallback enabled", () => {
     attemptIndex: 0,
     hasAnotherCandidate: true,
     lastFailureRecoverable: true,
+    lastFailureFallbackAllowed: true,
   });
   assert.equal(allowed, true);
 });
 
-test("fallback requires recoverable failures", () => {
+test("HYBRID allows fallback for non-recoverable failures when classifier still permits routing fallback", () => {
+  const policy = resolveRoutingPolicy({ allow_fallback: true });
+  const allowed = shouldAttemptFallback({
+    mode: "HYBRID",
+    policy,
+    attemptIndex: 0,
+    hasAnotherCandidate: true,
+    lastFailureRecoverable: false,
+    lastFailureFallbackAllowed: true,
+  });
+  assert.equal(allowed, true);
+});
+
+test("HYBRID blocks fallback when classifier forbids routing fallback", () => {
+  const policy = resolveRoutingPolicy({ allow_fallback: true });
+  const allowed = shouldAttemptFallback({
+    mode: "HYBRID",
+    policy,
+    attemptIndex: 0,
+    hasAnotherCandidate: true,
+    lastFailureRecoverable: false,
+    lastFailureFallbackAllowed: false,
+  });
+  assert.equal(allowed, false);
+});
+
+test("SAFE_FALLBACK requires recoverable failures", () => {
   const policy = resolveRoutingPolicy({ allow_fallback: true });
   const allowed = shouldAttemptFallback({
     mode: "SAFE_FALLBACK",
@@ -36,6 +64,7 @@ test("fallback requires recoverable failures", () => {
     attemptIndex: 0,
     hasAnotherCandidate: true,
     lastFailureRecoverable: false,
+    lastFailureFallbackAllowed: true,
   });
   assert.equal(allowed, false);
 });

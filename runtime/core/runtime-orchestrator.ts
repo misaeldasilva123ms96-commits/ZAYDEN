@@ -1,12 +1,20 @@
 import type { ProviderActual, ProviderRequest } from "../contracts/index.js";
 import type { ContractValidators } from "../contracts/index.js";
-import { ProviderExecutionError, ProviderUnavailableError } from "../providers/base/provider.errors.js";
+import { ProviderExecutionError } from "../providers/base/provider.errors.js";
+import { chaosInjectorFromPlan } from "../providers/harness/provider-harness.js";
 import type { ProviderGateway, ProviderRegistry } from "../providers/registry/provider-registry.js";
+import { classifyFailure } from "../providers/resilience/failure-classifier.js";
+import { DEFAULT_RETRY_POLICY, mergeRetryPolicy } from "../providers/resilience/retry-policy.js";
 import { shouldAttemptFallback } from "../providers/routing/fallback-policy.js";
+import {
+  resolveEnvironmentProfile,
+  routingPolicyPatchForProfile,
+} from "../providers/routing/policy-profiles.js";
 import { resolveRoutingPolicy } from "../providers/routing/routing-policy.js";
 import { selectProviderOrder } from "../providers/routing/provider-selection.js";
 import type {
   AdapterCatalogEntry,
+  ResilienceTelemetry,
   RoutingMode,
   RoutingPolicy,
   RoutingRequestInput,
@@ -14,6 +22,7 @@ import type {
   RuntimeErrorEnvelope,
   RuntimeInspectionView,
 } from "../providers/routing/routing-types.js";
+import { ResilienceController } from "./resilience-controller.js";
 
 function makeRuntimeError(
   error_type: RuntimeErrorEnvelope["error_type"],
@@ -44,10 +53,47 @@ function emptyInspection(mode: RoutingMode): RuntimeInspectionView {
   };
 }
 
+function emptyResilience(): ResilienceTelemetry {
+  return {
+    retry_count: 0,
+    timeout_triggered: false,
+    failure_type: null,
+    chaos_applied: false,
+    execution_attempts: 0,
+  };
+}
+
+function mergeResilienceAggregate(
+  agg: ResilienceTelemetry,
+  partial: ResilienceTelemetry,
+): void {
+  agg.retry_count += partial.retry_count;
+  agg.execution_attempts += partial.execution_attempts;
+  agg.timeout_triggered ||= partial.timeout_triggered;
+  agg.chaos_applied ||= partial.chaos_applied;
+  agg.failure_type = partial.failure_type;
+}
+
+function annotateInspectionWithResilience(
+  inspection: RuntimeInspectionView,
+  telemetry: ResilienceTelemetry,
+): void {
+  inspection.warnings.push(`RESILIENCE:retry_count=${telemetry.retry_count}`);
+  inspection.warnings.push(`RESILIENCE:timeout_triggered=${telemetry.timeout_triggered}`);
+  inspection.warnings.push(
+    `RESILIENCE:failure_type=${telemetry.failure_type ?? "none"}`,
+  );
+  inspection.warnings.push(`RESILIENCE:chaos_applied=${telemetry.chaos_applied}`);
+  inspection.warnings.push(
+    `RESILIENCE:execution_attempts=${telemetry.execution_attempts}`,
+  );
+  inspection.execution_path.push(
+    `RESILIENCE:summary:attempts=${telemetry.execution_attempts}:retries=${telemetry.retry_count}:chaos=${telemetry.chaos_applied}`,
+  );
+}
+
 function isRecoverableProviderFailure(error: unknown): boolean {
-  if (error instanceof ProviderUnavailableError) return true;
-  if (error instanceof ProviderExecutionError) return error.envelope.recoverable;
-  return false;
+  return classifyFailure(error).recoverable;
 }
 
 async function toCatalog(registry: ProviderRegistry): Promise<AdapterCatalogEntry[]> {
@@ -70,16 +116,24 @@ export class RuntimeOrchestrator {
     private readonly gateway: ProviderGateway,
     private readonly registry: ProviderRegistry,
     private readonly basePolicy: RoutingPolicy = resolveRoutingPolicy(),
+    private readonly resilience: ResilienceController = new ResilienceController(),
   ) {}
 
   async route(input: RoutingRequestInput): Promise<RoutingResult> {
     this.validators.assertValidProviderRequest(input.request);
     const started = Date.now();
-    const policy = resolveRoutingPolicy({ ...this.basePolicy, ...(input.policy ?? {}) });
+    const profile = resolveEnvironmentProfile(input.environment_profile);
+    const policy = resolveRoutingPolicy({
+      ...this.basePolicy,
+      ...routingPolicyPatchForProfile(profile),
+      ...(input.policy ?? {}),
+    });
     const mode = input.requested_mode ?? policy.default_mode;
     const providerRequested = input.requested_provider ?? null;
     const inspection = emptyInspection(mode);
+    const resilienceAgg = emptyResilience();
     inspection.execution_path.push(`MODE:${mode}`);
+    inspection.execution_path.push(`PROFILE:${profile}`);
 
     const selection = selectProviderOrder({
       catalog: await toCatalog(this.registry),
@@ -101,6 +155,7 @@ export class RuntimeOrchestrator {
         provider_actual: null,
         fallback_reason: null,
         observability: inspection,
+        resilience: emptyResilience(),
       };
     }
 
@@ -123,6 +178,7 @@ export class RuntimeOrchestrator {
         provider_actual: null,
         fallback_reason: null,
         observability: inspection,
+        resilience: emptyResilience(),
       };
     }
 
@@ -141,7 +197,30 @@ export class RuntimeOrchestrator {
       inspection.provider_chain.push({ name: adapter.id, kind: adapter.kind });
 
       try {
-        const response = await this.gateway.execute(adapterId, input.request);
+        const chaos = chaosInjectorFromPlan(input.simulation?.chaos);
+        const retryPolicy = mergeRetryPolicy(
+          DEFAULT_RETRY_POLICY,
+          policy.retry_policy ?? {},
+        );
+        const perAttemptMs = policy.timeout_policy?.per_attempt_ms ?? 30_000;
+        const outcome = await this.resilience.execute({
+          adapterId,
+          execute: () => this.gateway.execute(adapterId, input.request),
+          per_attempt_timeout_ms: perAttemptMs,
+          retry_policy: retryPolicy,
+          chaos,
+          onObserve: (line) => {
+            inspection.execution_path.push(line);
+            inspection.warnings.push(line);
+          },
+        });
+
+        if (!outcome.ok) {
+          throw outcome.error;
+        }
+
+        mergeResilienceAggregate(resilienceAgg, outcome.telemetry);
+        const response = outcome.response;
         const fallbackTriggered = i > 0;
         if (fallbackTriggered) {
           inspection.execution_path.push(`FALLBACK_SUCCESS:${adapterId}`);
@@ -154,6 +233,7 @@ export class RuntimeOrchestrator {
         inspection.fallback_triggered = fallbackTriggered;
         inspection.execution_path.push("ROUTING_DONE");
         inspection.latency_ms = Date.now() - started;
+        annotateInspectionWithResilience(inspection, resilienceAgg);
         const providerActual: ProviderActual = response.provider_actual;
         return {
           response,
@@ -163,10 +243,12 @@ export class RuntimeOrchestrator {
           provider_actual: providerActual,
           fallback_reason: fallbackReason,
           observability: inspection,
+          resilience: { ...resilienceAgg },
         };
       } catch (error) {
         lastError = error;
-        const recoverable = isRecoverableProviderFailure(error);
+        const classified = classifyFailure(error);
+        const recoverable = classified.recoverable;
         const hasAnotherCandidate = i < order.length - 1;
         const allowNext = shouldAttemptFallback({
           mode,
@@ -174,6 +256,7 @@ export class RuntimeOrchestrator {
           attemptIndex: i,
           hasAnotherCandidate,
           lastFailureRecoverable: recoverable,
+          lastFailureFallbackAllowed: classified.fallback_allowed,
         });
         inspection.warnings.push(
           error instanceof Error ? error.message : "provider failure",
@@ -212,6 +295,7 @@ export class RuntimeOrchestrator {
         }
         inspection.execution_path.push("ROUTING_FAILED");
         inspection.latency_ms = Date.now() - started;
+        annotateInspectionWithResilience(inspection, resilienceAgg);
         return {
           response: null,
           error: err,
@@ -226,6 +310,7 @@ export class RuntimeOrchestrator {
               }
             : null,
           observability: inspection,
+          resilience: { ...resilienceAgg },
         };
       }
     }
@@ -238,6 +323,7 @@ export class RuntimeOrchestrator {
     );
     inspection.execution_path.push("ROUTING_EXHAUSTED");
     inspection.latency_ms = Date.now() - started;
+    annotateInspectionWithResilience(inspection, resilienceAgg);
     return {
       response: null,
       error: exhausted,
@@ -252,6 +338,7 @@ export class RuntimeOrchestrator {
           }
         : null,
       observability: inspection,
+      resilience: { ...resilienceAgg },
     };
   }
 }
