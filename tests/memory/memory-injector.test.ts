@@ -10,7 +10,7 @@ test("enforceContextBudget: drops oldest first", () => {
     { id: "a", role: "user", text: "aaaa" },
     { id: "b", role: "user", text: "bbbb" },
   ];
-  const r = enforceContextBudget({ entries, max_tokens: 2 });
+  const r = enforceContextBudget({ entries, max_tokens: 1 });
   assert.equal(r.entries.length, 1);
   assert.equal(r.entries[0]?.id, "b");
   assert.equal(r.trimmed, true);
