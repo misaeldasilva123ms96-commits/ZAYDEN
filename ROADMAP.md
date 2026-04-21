@@ -13,10 +13,11 @@ This roadmap is intentionally conservative: it describes **engineering phases**,
 - **Phase 6 — Resilience + harness:** failure classification, bounded retries/timeouts, deterministic chaos, provider scenario harness, environment policy profiles (`docs/phases/phase-06-resilience-harness.md`).
 - **Phase 7 — Tooling policy:** tool registry, permission model, invocation validation, timeout-wrapped executor, normalized errors, observability (`docs/phases/phase-07-tooling-policy.md`).
 - **Phase 8 — Session + memory:** ephemeral session store/manager, optional persistence adapters, bounded memory assembly via `MemoryOrchestrator` (`docs/phases/phase-08-memory-session-framework.md`).
+- **Phase 9 — Runtime API surface:** thin HTTP boundary, public schemas, `RuntimeService` entrypoint, health/readiness, normalized errors (`docs/phases/phase-09-runtime-api-surface.md`).
 
 ## Next
 
-- **Phase 9 — Runtime API surface:** explicit service entrypoints for external clients.
+- **Phase 10 — TBD:** extend external operability (host binary, auth boundary, or streaming profile) behind new ADRs without relaxing transport/runtime separation.
 
 ## Explicit non-goals (near term)
 

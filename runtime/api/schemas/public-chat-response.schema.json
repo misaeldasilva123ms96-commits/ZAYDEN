@@ -1,0 +1,82 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://zayden.local/schemas/api/1-0-0/public-chat-response.schema.json",
+  "title": "ZaydenPublicChatResponse",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "api_version",
+    "request_id",
+    "session_id",
+    "status",
+    "output",
+    "runtime_mode",
+    "provider_requested",
+    "provider_actual",
+    "fallback_reason",
+    "tool_calls",
+    "warnings",
+    "latency_ms",
+    "response_source",
+    "error_type",
+    "memory_hits",
+    "metadata"
+  ],
+  "properties": {
+    "api_version": { "type": "string", "enum": ["1.0.0"] },
+    "request_id": { "type": "string", "minLength": 1 },
+    "session_id": { "type": "string", "minLength": 1 },
+    "status": { "type": "string", "enum": ["success", "error"] },
+    "output": { "type": "string" },
+    "runtime_mode": {
+      "type": "string",
+      "enum": ["LOCAL_ONLY", "CLOUD_ONLY", "HYBRID", "SAFE_FALLBACK"]
+    },
+    "provider_requested": { "type": ["string", "null"] },
+    "provider_actual": {
+      "type": ["object", "null"],
+      "additionalProperties": false,
+      "required": ["kind", "name", "model"],
+      "properties": {
+        "kind": {
+          "type": "string",
+          "enum": ["openai_compatible", "gemini", "ollama", "local_gguf", "unknown"]
+        },
+        "name": { "type": "string", "minLength": 1 },
+        "model": { "type": ["string", "null"] }
+      }
+    },
+    "fallback_reason": {
+      "oneOf": [
+        { "type": "null" },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["did_fallback"],
+          "properties": {
+            "did_fallback": { "type": "boolean" },
+            "code": { "type": ["string", "null"] }
+          }
+        }
+      ]
+    },
+    "tool_calls": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["tool_name", "status"],
+        "properties": {
+          "tool_name": { "type": "string" },
+          "status": { "type": "string" }
+        }
+      }
+    },
+    "warnings": { "type": "array", "items": { "type": "string" } },
+    "latency_ms": { "type": "integer", "minimum": 0 },
+    "response_source": { "type": "string", "enum": ["runtime", "api"] },
+    "error_type": { "type": ["string", "null"] },
+    "memory_hits": { "type": "integer", "minimum": 0 },
+    "metadata": { "type": "object", "additionalProperties": true }
+  }
+}

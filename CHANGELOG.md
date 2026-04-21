@@ -8,6 +8,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ### Added
 
+- Phase 9 external HTTP API surface (`runtime/api/*`, `RuntimeService` in `runtime/core/runtime-service.ts`): public JSON Schemas, thin transport, `POST /api/chat`, `GET /api/health`, `GET /api/readiness`, normalized errors, API access logs (`npm run test:api`, `npm run gate:phase9`, ADR-0010, `docs/architecture/runtime-api-surface.md`, `docs/architecture/observability.md`, `docs/runbooks/api-operations.md`, `docs/runbooks/troubleshooting.md`)
 - Phase 8 session + memory framework (`runtime/memory/*`, `MemoryOrchestrator`), policy-gated loading, context budget, in-memory and file persistence adapters, and tests (`npm run test:memory`, ADR-0009, `docs/architecture/memory-model.md`)
 - Phase 7 tool layer (`runtime/tools/*`, `ToolOrchestrator`), explicit registry/policy/validator/executor split, builtins (`echo`, `clock`, `fail`), and tests (`npm run test:tools`, ADR-0008, `docs/architecture/tooling-model.md`)
 - Phase 6 resilience layer (failure classification, timeout wrapper, bounded retries), deterministic chaos injector, provider harness + scenarios, environment routing profiles, and `RoutingResult.resilience` telemetry mirrored into inspection strings (`docs/architecture/resilience-model.md`, ADR-0007)

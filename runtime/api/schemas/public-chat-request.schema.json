@@ -1,0 +1,26 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://zayden.local/schemas/api/1-0-0/public-chat-request.schema.json",
+  "title": "ZaydenPublicChatRequest",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["api_version", "session_id", "input", "mode"],
+  "properties": {
+    "api_version": {
+      "type": "string",
+      "enum": ["1.0.0"]
+    },
+    "session_id": { "type": "string", "minLength": 1 },
+    "input": { "type": "string", "minLength": 1 },
+    "mode": {
+      "type": "string",
+      "enum": ["LOCAL_ONLY", "CLOUD_ONLY", "HYBRID", "SAFE_FALLBACK"]
+    },
+    "provider": { "type": ["string", "null"] },
+    "routing_policy": { "type": "object", "additionalProperties": true },
+    "tool_policy": { "type": "object", "additionalProperties": true },
+    "memory_policy": { "type": "object", "additionalProperties": true },
+    "ensure_session": { "type": "boolean" },
+    "metadata": { "type": "object", "additionalProperties": true }
+  }
+}

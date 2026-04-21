@@ -41,11 +41,13 @@ function main() {
     join(REPO_ROOT, "runtime", "providers"),
     join(REPO_ROOT, "runtime", "tools"),
     join(REPO_ROOT, "runtime", "memory"),
+    join(REPO_ROOT, "runtime", "api"),
     join(REPO_ROOT, "runtime", "observability"),
     join(REPO_ROOT, "research"),
     join(REPO_ROOT, "research", "source-models", "manifests"),
     join(REPO_ROOT, "tests", "unit"),
     join(REPO_ROOT, "tests", "integration"),
+    join(REPO_ROOT, "tests", "api"),
     join(REPO_ROOT, "tests", "contracts"),
     join(REPO_ROOT, "tests", "regression"),
     join(REPO_ROOT, "tests", "fixtures"),
@@ -223,6 +225,40 @@ function main() {
   ];
   for (const p of phase8Memory) {
     must(existsSync(p), `Missing Phase 8 memory artifact: ${p}`);
+  }
+
+  const phase9ApiSurface = [
+    join(REPO_ROOT, "runtime", "api", "transport", "http-server.ts"),
+    join(REPO_ROOT, "runtime", "api", "transport", "routes.ts"),
+    join(REPO_ROOT, "runtime", "api", "transport", "request-context.ts"),
+    join(REPO_ROOT, "runtime", "api", "handlers", "chat.handler.ts"),
+    join(REPO_ROOT, "runtime", "api", "handlers", "health.handler.ts"),
+    join(REPO_ROOT, "runtime", "api", "handlers", "readiness.handler.ts"),
+    join(REPO_ROOT, "runtime", "api", "normalization", "request-normalizer.ts"),
+    join(REPO_ROOT, "runtime", "api", "normalization", "response-normalizer.ts"),
+    join(REPO_ROOT, "runtime", "api", "normalization", "api-errors.ts"),
+    join(REPO_ROOT, "runtime", "api", "normalization", "public-validators.ts"),
+    join(REPO_ROOT, "runtime", "api", "schemas", "public-chat-request.schema.json"),
+    join(REPO_ROOT, "runtime", "api", "schemas", "public-chat-response.schema.json"),
+    join(REPO_ROOT, "runtime", "api", "schemas", "public-error-response.schema.json"),
+    join(REPO_ROOT, "runtime", "api", "middleware", "error-middleware.ts"),
+    join(REPO_ROOT, "runtime", "api", "middleware", "request-logging.ts"),
+    join(REPO_ROOT, "runtime", "api", "observability", "api-logger.ts"),
+    join(REPO_ROOT, "runtime", "core", "runtime-service.ts"),
+    join(REPO_ROOT, "tests", "api", "chat-api.test.ts"),
+    join(REPO_ROOT, "tests", "api", "health-api.test.ts"),
+    join(REPO_ROOT, "tests", "api", "readiness-api.test.ts"),
+    join(REPO_ROOT, "tests", "api", "error-api.test.ts"),
+    join(REPO_ROOT, "tests", "integration", "runtime-service.test.ts"),
+    join(REPO_ROOT, "docs", "architecture", "runtime-api-surface.md"),
+    join(REPO_ROOT, "docs", "runbooks", "api-operations.md"),
+    join(REPO_ROOT, "docs", "phases", "phase-09-runtime-api-surface.md"),
+    join(REPO_ROOT, "docs", "decisions", "ADR-0010-runtime-api-boundary.md"),
+    join(REPO_ROOT, "docs", "architecture", "observability.md"),
+    join(REPO_ROOT, "docs", "runbooks", "troubleshooting.md"),
+  ];
+  for (const p of phase9ApiSurface) {
+    must(existsSync(p), `Missing Phase 9 runtime API artifact: ${p}`);
   }
 
   const hashesPath = join(REPO_ROOT, "docs", "intake", "artifact-hashes.json");

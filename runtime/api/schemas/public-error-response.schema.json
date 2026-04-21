@@ -1,0 +1,17 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://zayden.local/schemas/api/1-0-0/public-error-response.schema.json",
+  "title": "ZaydenPublicErrorResponse",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["api_version", "request_id", "error_code", "message", "recoverable"],
+  "properties": {
+    "api_version": { "type": "string", "enum": ["1.0.0"] },
+    "request_id": { "type": "string", "minLength": 1 },
+    "error_code": { "type": "string", "minLength": 1 },
+    "message": { "type": "string", "minLength": 1 },
+    "recoverable": { "type": "boolean" },
+    "session_id": { "type": ["string", "null"] },
+    "metadata": { "type": "object", "additionalProperties": true }
+  }
+}
