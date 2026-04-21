@@ -11,7 +11,7 @@
 
 ## Commit
 
-- hash: pending final hardening commit on `F0-F10`
+- hash: `3c7ad6e`
 
 ## Validation commands run
 
@@ -25,7 +25,13 @@
 - notes:
   - no remote configured (`git remote -v` empty)
   - `gh` command unavailable in shell
-  - exact publication commands are provided in the final release handoff
+  - exact publication commands:
+
+```bash
+# create a new repository on GitHub (web UI) named zayden-runtime
+git remote add origin https://github.com/<your-org-or-user>/zayden-runtime.git
+git push -u origin F0-F10
+```
 
 ## Pending before main
 
