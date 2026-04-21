@@ -195,6 +195,36 @@ function main() {
     must(existsSync(p), `Missing Phase 7 tooling artifact: ${p}`);
   }
 
+  const phase8Memory = [
+    join(REPO_ROOT, "runtime", "memory", "base", "memory.types.ts"),
+    join(REPO_ROOT, "runtime", "memory", "base", "memory.errors.ts"),
+    join(REPO_ROOT, "runtime", "memory", "base", "session.types.ts"),
+    join(REPO_ROOT, "runtime", "memory", "session", "session-store.ts"),
+    join(REPO_ROOT, "runtime", "memory", "session", "session-manager.ts"),
+    join(REPO_ROOT, "runtime", "memory", "session", "session-normalizer.ts"),
+    join(REPO_ROOT, "runtime", "memory", "persistence", "memory-store.interface.ts"),
+    join(REPO_ROOT, "runtime", "memory", "persistence", "in-memory.store.ts"),
+    join(REPO_ROOT, "runtime", "memory", "persistence", "file-memory.store.ts"),
+    join(REPO_ROOT, "runtime", "memory", "loading", "memory-loader.ts"),
+    join(REPO_ROOT, "runtime", "memory", "loading", "memory-selector.ts"),
+    join(REPO_ROOT, "runtime", "memory", "loading", "memory-injector.ts"),
+    join(REPO_ROOT, "runtime", "memory", "policy", "memory-policy.ts"),
+    join(REPO_ROOT, "runtime", "memory", "policy", "context-budget.ts"),
+    join(REPO_ROOT, "runtime", "core", "memory-orchestrator.ts"),
+    join(REPO_ROOT, "tests", "memory", "session-manager.test.ts"),
+    join(REPO_ROOT, "tests", "memory", "memory-loader.test.ts"),
+    join(REPO_ROOT, "tests", "memory", "memory-injector.test.ts"),
+    join(REPO_ROOT, "tests", "memory", "memory-policy.test.ts"),
+    join(REPO_ROOT, "tests", "integration", "memory-orchestrator.test.ts"),
+    join(REPO_ROOT, "docs", "architecture", "memory-model.md"),
+    join(REPO_ROOT, "docs", "runbooks", "memory-operations.md"),
+    join(REPO_ROOT, "docs", "phases", "phase-08-memory-session-framework.md"),
+    join(REPO_ROOT, "docs", "decisions", "ADR-0009-memory-session-boundaries.md"),
+  ];
+  for (const p of phase8Memory) {
+    must(existsSync(p), `Missing Phase 8 memory artifact: ${p}`);
+  }
+
   const hashesPath = join(REPO_ROOT, "docs", "intake", "artifact-hashes.json");
   must(existsSync(hashesPath), `Missing fingerprint registry: ${hashesPath}`);
   const registry = readJson(hashesPath);
